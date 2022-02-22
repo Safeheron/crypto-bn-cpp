@@ -22,14 +22,15 @@ install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${exported_targets_name}
         ARCHIVE DESTINATION "lib"
-        PUBLIC_HEADER DESTINATION "include/safeheron/mpc_dsa_lib"
+        PUBLIC_HEADER DESTINATION "include/safeheron/crypto-bn"
 )
+
 install(
         EXPORT ${exported_targets_name}
         FILE ${exported_targets_filename}
-        #NAMESPACE safeheron::bn
         DESTINATION ${export_dirpath}
 )
+
 install(
         FILES
             "${CMAKE_CURRENT_BINARY_DIR}/${config_filename}"
@@ -38,21 +39,9 @@ install(
             ${export_dirpath}
 )
 
-#install(
-#        DIRECTORY
-#            "${CMAKE_CURRENT_SOURCE_DIR}/include/mpc_dsa_lib"
-#        DESTINATION
-#            "include"
-#)
-
 # Install head files
 install(
         DIRECTORY src/
         DESTINATION include/safeheron/crypto-bn
-        FILES_MATCHING PATTERN "*.h"
-)
-install(
-        DIRECTORY 3rdparty
-        DESTINATION include/safeheron
         FILES_MATCHING PATTERN "*.h"
 )

@@ -15,20 +15,22 @@ SET(CMAKE_BUILD_TYPE "Debug")
 #SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Ofast")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 
-include_directories("../include")
+#set(OPENSSL_USE_STATIC_LIBS TRUE)
+find_package(OpenSSL REQUIRED)
+if (NOT OpenSSL_FOUND)
+    message(FATAL_ERROR "OpenSSL Not Found!")
+endif (NOT OpenSSL_FOUND)
+
+find_package(CryptoBN REQUIRED)
+if (NOT CryptoBN_FOUND)
+    message(FATAL_ERROR "CryptoBN Not Found!")
+endif (NOT CryptoBN_FOUND)
+
+include_directories(${CryptoBN_INCLUDE_DIRS}
+                    ${OPENSSL_INCLUDE_DIR})
 
 add_executable(bn-test bn-test.cpp)
 target_link_libraries( bn-test
         CryptoBN
         ${GTEST_BOTH_LIBRARIES}
         pthread )
-add_test(NAME test-bn COMMAND bn-test)
-
-add_executable(rnd-test rnd-test.cpp)
-target_link_libraries( rnd-test
-        ${GTEST_BOTH_LIBRARIES}
-        CryptoBN
-        pthread )
-add_test(NAME test_rnd COMMAND rnd-test)
-
-

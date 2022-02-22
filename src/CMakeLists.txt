@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(crypto-bn)
+project(CryptoBN)
 
 set(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_BUILD_TYPE "Release")
@@ -23,13 +23,13 @@ include_directories(${PROTOBUF_INCLUDE_DIRS}
         ${OPENSSL_INCLUDE_DIR}
         )
 
-file(GLOB Crypto_BN_SOURCE
+file(GLOB CryptoBN_SOURCE
         ntl/bn.cpp
         rand/rand.cpp
         )
 
-add_library(crypto-bn SHARED
-        ${Crypto_BN_SOURCE}
+add_library(CryptoBN SHARED
+        ${CryptoBN_SOURCE}
         )
 
 message(STATUS "PROTOBUF_LIBRARY = ${PROTOBUF_LIBRARIES}")
