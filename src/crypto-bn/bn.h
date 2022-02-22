@@ -9,7 +9,9 @@
 
 struct bignum_st;
 
-namespace ntl {
+namespace safeheron {
+namespace bignum {
+
 class BN {
 public:
     /**
@@ -369,6 +371,8 @@ private:
     // BIGNUM object
     struct bignum_st* bn_;
 };
-}
+
+};
+};
 
 #endif //UNTITLED_NUM_H

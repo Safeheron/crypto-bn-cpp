@@ -1,15 +1,14 @@
 //
 // Created by 何剑虹 on 2020/10/22.
 //
-#include "gtest/gtest.h"
+#include <cstdio>
+#include <ctime>
 #include <google/protobuf/stubs/common.h>
-#include "../src/rand/rand.h"
-#include "../src/exception/exceptions.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "gtest/gtest.h"
+#include "crypto-bn/rand.h"
+#include "exception/exceptions.h"
 
-using namespace ntl;
+using safeheron::bignum::BN;
 
 TEST(Rand, random)
 {
@@ -19,34 +18,34 @@ TEST(Rand, random)
 
 
     std::string s;
-    BN n = Rand::RandomBN(32);
+    BN n = safeheron::rand::RandomBN(32);
     n.ToHexStr(s);
     std::cout << s << std::endl;
 
-    n = Rand::RandomBNStrict(32);
+    n = safeheron::rand::RandomBNStrict(32);
     max = n;
     n.ToHexStr(s);
     std::cout << s << std::endl;
 
-    n = Rand::RandomPrime(32);
+    n = safeheron::rand::RandomPrime(32);
     n.ToHexStr(s);
     std::cout << "prime(256):"  << s << std::endl;
 
-    n = Rand::RandomPrimeStrict(32);
+    n = safeheron::rand::RandomPrimeStrict(32);
     n.ToHexStr(s);
     std::cout << "prime(strict 256):"  << s << std::endl;
 
     for( int i = 0 ; i < 10 ; i++ ){
-        n = Rand::RandomPrimeStrict(1024/8);
+        n = safeheron::rand::RandomPrimeStrict(1024/8);
         n.ToHexStr(s);
         std::cout << "prime(strict 1024): " << s << std::endl;
     }
 
-    n = Rand::RandomBNLt(max);
+    n = safeheron::rand::RandomBNLt(max);
     n.ToHexStr(s);
     std::cout << s << std::endl;
 
-    n = Rand::RandomBNLtGcd(max);
+    n = safeheron::rand::RandomBNLtGcd(max);
     n.ToHexStr(s);
     std::cout << s << std::endl;
     EXPECT_TRUE(n.Gcd(max) == 1);
@@ -60,7 +59,7 @@ TEST(Rand, randomByte32Generator)
 
     uint8_t b32[32];
     for(int i = 0; i < 100000; i++){
-        Rand::RandomBytes(b32, 32);
+        safeheron::rand::RandomBytes(b32, 32);
         if(i % 10000 == 0) {
             std::cout << i << std::endl;
         }
@@ -79,7 +78,7 @@ TEST(Rand, randomBNGenerator)
 
     std::string str;
     for(int i = 0; i < 100000; i++){
-        BN n = Rand::RandomBN(32);
+        BN n = safeheron::rand::RandomBN(32);
         if(i % 10000 == 0) {
             std::cout << i << std::endl;
         }
@@ -94,7 +93,7 @@ TEST(Rand, TestExecption)
 {
     BN n;
     try{
-        n = Rand::RandomBN(32000000000);
+        n = safeheron::rand::RandomBN(32000000000);
     }catch(const BadAllocException &e) {
         std::cout << "Catch BadAllocException: " << e.detail() << std::endl;
     }catch(const RandomSourceException &e) {
@@ -111,7 +110,7 @@ TEST(Rand, PrimeGenerate)
         int count = 0;
         while(true){
             count ++;
-            BN n = Rand::RandomBN(1024/8);
+            BN n = safeheron::rand::RandomBN(1024/8);
             std::string str;
             if(n.IsProbablyPrime()){
                 n.ToHexStr(str);
@@ -128,7 +127,7 @@ TEST(Rand, SafePrimes)
 {
     BN p;
     int key_bit = 2048;
-    p = Rand::RandomSafePrime(key_bit/(2 * 8));
+    p = safeheron::rand::RandomSafePrime(key_bit/(2 * 8));
     std::string str;
     p.ToHexStr(str);
     std::cout << "safe primes.p: " << str << std::endl;

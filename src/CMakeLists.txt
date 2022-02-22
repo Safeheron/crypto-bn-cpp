@@ -19,20 +19,18 @@ if (NOT OpenSSL_FOUND)
 endif (NOT OpenSSL_FOUND)
 
 message(STATUS "OPENSSL_INCLUDE_DIR = ${OPENSSL_INCLUDE_DIR}")
-include_directories(${PROTOBUF_INCLUDE_DIRS}
+message(STATUS "PROTOBUF_LIBRARY = ${PROTOBUF_LIBRARIES}")
+
+add_library(${PROJECT_NAME} SHARED
+        crypto-bn/bn.cpp
+        crypto-bn/rand.cpp
+        )
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+        ${PROTOBUF_INCLUDE_DIRS}
         ${OPENSSL_INCLUDE_DIR}
         )
 
-file(GLOB CryptoBN_SOURCE
-        ntl/bn.cpp
-        rand/rand.cpp
-        )
-
-add_library(CryptoBN SHARED
-        ${CryptoBN_SOURCE}
-        )
-
-message(STATUS "PROTOBUF_LIBRARY = ${PROTOBUF_LIBRARIES}")
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${PROTOBUF_LIBRARIES}
         OpenSSL::Crypto
         -ldl

@@ -9,10 +9,12 @@
 #include <openssl/rand.h>
 #include <memory>
 
+using safeheron::bignum::BN;
 
-namespace ntl{
+namespace safeheron{
+namespace rand{
 
-bool Rand::RandomBytes(unsigned char *buf, size_t size) {
+bool RandomBytes(unsigned char *buf, size_t size) {
     int ret = 0;
     if (!buf) {
         throw RandomSourceException(__FILE__, __LINE__, __FUNCTION__, -1);
@@ -23,7 +25,7 @@ bool Rand::RandomBytes(unsigned char *buf, size_t size) {
     return true;
 }
 
-BN Rand::RandomBN(size_t byteSize) {
+BN RandomBN(size_t byteSize) {
     BN n;
     std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
     if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
@@ -34,7 +36,7 @@ BN Rand::RandomBN(size_t byteSize) {
     return n;
 }
 
-BN Rand::RandomBNStrict(size_t byteSize) {
+BN RandomBNStrict(size_t byteSize) {
     std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
     if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
     do {
@@ -44,7 +46,7 @@ BN Rand::RandomBNStrict(size_t byteSize) {
     return n;
 }
 
-BN Rand::RandomPrime(size_t byteSize) {
+BN RandomPrime(size_t byteSize) {
     BN n;
     BIGNUM* p = nullptr;
     int ret = 0;
@@ -60,7 +62,7 @@ BN Rand::RandomPrime(size_t byteSize) {
     return n;
 }
 
-BN Rand::RandomPrimeStrict(size_t byteSize) {
+BN RandomPrimeStrict(size_t byteSize) {
     BN n;
     do {
         n = RandomPrime(byteSize);
@@ -68,7 +70,7 @@ BN Rand::RandomPrimeStrict(size_t byteSize) {
     return n;
 }
 
-BN Rand::RandomSafePrime(size_t byteSize) {
+BN RandomSafePrime(size_t byteSize) {
     BN n;
     BIGNUM* p = nullptr;
     int ret = 0;
@@ -84,7 +86,7 @@ BN Rand::RandomSafePrime(size_t byteSize) {
     return n;
 }
 
-BN Rand::RandomBNLt(const BN &max) {
+BN RandomBNLt(const BN &max) {
     BN n;
     int byteLen = max.ByteLength();
     do{
@@ -93,11 +95,12 @@ BN Rand::RandomBNLt(const BN &max) {
     return n;
 }
 
-BN Rand::RandomBNLtGcd(const BN &max) {
+BN RandomBNLtGcd(const BN &max) {
     BN n;
     do{
         n = RandomBNLt(max);
     }while (n.Gcd(max) != 1);
     return n;
+}
 }
 }

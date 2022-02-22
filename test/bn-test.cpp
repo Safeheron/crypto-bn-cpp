@@ -3,9 +3,10 @@
 //
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "../src/ntl/bn.h"
-#include "../src/rand/rand.h"
-using namespace ntl;
+#include "crypto-bn/bn.h"
+#include "crypto-bn/rand.h"
+
+using safeheron::bignum::BN;
 
 TEST(BN, Constructor)
 {
@@ -505,7 +506,7 @@ TEST(BN, SquareRootModuloP_More)
 {
     BN p = BN::FromHexStr("ffffffff00000001000000000000000000000000ffffffffffffffffffffffff") ;
     for(int i = 0; i < 100; ++i){
-        BN r = ntl::Rand::RandomBNLt(p);
+        BN r = safeheron::rand::RandomBNLt(p);
         BN n = (r * r) % p;
         BN ret = n.SqrtM(p);
         EXPECT_TRUE(isRootM(r, ret, p));

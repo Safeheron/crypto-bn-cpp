@@ -10,7 +10,9 @@
 #include <openssl/bn.h>
 #include "../exception/exceptions.h"
 
-namespace ntl {
+namespace safeheron {
+namespace bignum {
+
 /**
  * const variables definition
 */
@@ -1196,5 +1198,7 @@ std::string BN::Inspect(int base) const
         ToHexStr(str);
     }
     return str;
+}
+
 }
 }
