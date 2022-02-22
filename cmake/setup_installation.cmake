@@ -21,13 +21,14 @@ configure_file("cmake/${config_filename}.in" "${config_filename}" @ONLY)
 install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${exported_targets_name}
-        ARCHIVE DESTINATION "lib"
-        PUBLIC_HEADER DESTINATION "include/safeheron/crypto-bn"
+        ARCHIVE DESTINATION lib
+        PUBLIC_HEADER DESTINATION include/safeheron
 )
 
 install(
         EXPORT ${exported_targets_name}
         FILE ${exported_targets_filename}
+        #        NAMESPACE safeheron::
         DESTINATION ${export_dirpath}
 )
 
@@ -39,9 +40,9 @@ install(
             ${export_dirpath}
 )
 
-# Install head files
+## Install head files
 install(
         DIRECTORY src/
-        DESTINATION include/safeheron/crypto-bn
+        DESTINATION include/safeheron
         FILES_MATCHING PATTERN "*.h"
 )
