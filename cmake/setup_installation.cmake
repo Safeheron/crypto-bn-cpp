@@ -16,7 +16,10 @@ write_basic_package_version_file(
         COMPATIBILITY SameMajorVersion
 )
 
-configure_file("cmake/${config_filename}.in" "${config_filename}" @ONLY)
+configure_package_config_file(
+        "cmake/${config_filename}.in" "${config_filename}"
+        INSTALL_DESTINATION "${export_dirpath}"
+)
 
 install(
         TARGETS ${PROJECT_NAME}
@@ -28,7 +31,6 @@ install(
 install(
         EXPORT ${exported_targets_name}
         FILE ${exported_targets_filename}
-        #        NAMESPACE safeheron::
         DESTINATION ${export_dirpath}
 )
 

@@ -3,7 +3,8 @@
 //
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "crypto-bn/rand.h"
+#include <crypto-bn/bn.h>
+#include <crypto-bn/rand.h>
 
 using safeheron::bignum::BN;
 
