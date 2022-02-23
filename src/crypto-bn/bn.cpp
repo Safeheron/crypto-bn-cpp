@@ -8,7 +8,7 @@
 #include <sstream>
 #include <string>
 #include <openssl/bn.h>
-#include "../exception/exceptions.h"
+#include "../exception/safeheron_exceptions.h"
 
 namespace safeheron {
 namespace bignum {

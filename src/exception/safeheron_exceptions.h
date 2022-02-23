@@ -2,8 +2,8 @@
  *@brief MyFile
  */
 
-#ifndef CRYPTO_BN_EXCEPTION_H
-#define CRYPTO_BN_EXCEPTION_H
+#ifndef SAFEHERON_EXCEPTION_H
+#define SAFEHERON_EXCEPTION_H
 
 #define EXCEPTION_FILE_PATH_BUF_SIZE 48
 #define EXCEPTION_FUNC_NAME_BUF_SIZE 24
@@ -31,4 +31,4 @@ public:
     explicit OpensslException(const char * file_path, int line_num, const char * func, long internal_code) : LocatedException(file_path, line_num, func, internal_code) {}
 };
 
-#endif // CRYPTO_BN_EXCEPTION_H
+#endif // SAFEHERON_EXCEPTION_H

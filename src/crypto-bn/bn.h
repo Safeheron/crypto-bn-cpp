@@ -2,8 +2,8 @@
 // Created by 何剑虹 on 2020/8/31.
 //
 
-#ifndef UNTITLED_NUM_H
-#define UNTITLED_NUM_H
+#ifndef SAFEHERON_BIG_NUMBER_H
+#define SAFEHERON_BIG_NUMBER_H
 
 #include <iostream>
 
@@ -375,4 +375,4 @@ private:
 };
 };
 
-#endif //UNTITLED_NUM_H
+#endif //SAFEHERON_BIG_NUMBER_H

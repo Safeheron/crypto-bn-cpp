@@ -2,7 +2,7 @@
 // Created by 何剑虹 on 2020/10/25.
 //
 #include "rand.h"
-#include "../exception/exceptions.h"
+#include "../exception/safeheron_exceptions.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include <openssl/bn.h>

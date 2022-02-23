@@ -2,8 +2,8 @@
 // Created by 何剑虹 on 2020/10/25.
 //
 
-#ifndef CPP_MPC_RAND_H
-#define CPP_MPC_RAND_H
+#ifndef SAFEHERON_RANDOM_H
+#define SAFEHERON_RANDOM_H
 
 #include "bn.h"
 
@@ -23,4 +23,4 @@ safeheron::bignum::BN RandomBNLtGcd(const safeheron::bignum::BN &max);
 };
 
 
-#endif //CPP_MPC_RAND_H
+#endif //SAFEHERON_RANDOM_H

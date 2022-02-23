@@ -6,7 +6,7 @@
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
 #include "crypto-bn/rand.h"
-#include "exception/exceptions.h"
+#include "exception/safeheron_exceptions.h"
 
 using safeheron::bignum::BN;
 
