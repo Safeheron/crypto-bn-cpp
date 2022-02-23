@@ -22,6 +22,7 @@ if(CryptoBN_FOUND )
     message(STATUS "CryptoBN_DIR = ${CryptoBN_DIR}")
     message(STATUS "CryptoBN_INCLUDE_DIRS = ${CryptoBN_INCLUDE_DIRS}")
     message(STATUS "CryptoBN_LIBRARY_DIR = ${CryptoBN_LIBRARY_DIR}")
+    message(STATUS "CryptoBN_LIBRARY = ${CryptoBN_LIBRARY}")
 endif(CryptoBN_FOUND )
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
