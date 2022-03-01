@@ -1200,5 +1200,13 @@ std::string BN::Inspect(int base) const
     return str;
 }
 
+/**
+ * Return BIGNUM pointer of bn_
+ */
+bignum_st* BN::GetBIGNUM() const
+{
+    return bn_;
+}
+
 }
 }

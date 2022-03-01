@@ -354,6 +354,10 @@ public:
      * Return the string of this BIGNUM
     */
     std::string Inspect(int base = 16) const;
+    /**
+     * Return BIGNUM pointer of bn_
+     */
+    bignum_st* GetBIGNUM() const;
 
 public:
     /**
