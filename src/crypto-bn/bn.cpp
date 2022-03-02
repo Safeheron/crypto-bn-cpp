@@ -10,6 +10,11 @@
 #include <openssl/bn.h>
 #include "../exception/safeheron_exceptions.h"
 
+using safeheron::exception::LocatedException;
+using safeheron::exception::OpensslException;
+using safeheron::exception::BadAllocException;
+using safeheron::exception::RandomSourceException;
+
 namespace safeheron {
 namespace bignum {
 
@@ -1203,7 +1208,7 @@ std::string BN::Inspect(int base) const
 /**
  * Return BIGNUM pointer of bn_
  */
-bignum_st* BN::GetBIGNUM() const
+const bignum_st* BN::GetBIGNUM() const
 {
     return bn_;
 }

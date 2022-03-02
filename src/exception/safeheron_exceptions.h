@@ -10,6 +10,9 @@
 
 #include "located_exception.h"
 
+namespace safeheron{
+namespace exception{
+
 ///@brief BadAllocException class thrown when a memory allocation fails
 class BadAllocException : public LocatedException
 {
@@ -30,5 +33,9 @@ class OpensslException : public LocatedException
 public:
     explicit OpensslException(const char * file_path, int line_num, const char * func, long internal_code) : LocatedException(file_path, line_num, func, internal_code) {}
 };
+
+}
+}
+
 
 #endif // SAFEHERON_EXCEPTION_H

@@ -10,6 +10,9 @@
 #include <string.h>
 #include <stdexcept>
 
+namespace safeheron{
+namespace exception{
+
 //! LocatedException class thrown when a method fails, with message (file_path, func, line_num, internal_code)
 class LocatedException : public std::exception
 {
@@ -57,6 +60,9 @@ public:
     char func_[EXCEPTION_FUNC_NAME_BUF_SIZE];
     int line_num_;
     long internal_code_;
+};
+
+};
 };
 
 #endif // SAFEHERON_LOCATED_EXCEPTION_H

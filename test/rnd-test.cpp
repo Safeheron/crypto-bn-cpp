@@ -9,6 +9,10 @@
 #include "exception/safeheron_exceptions.h"
 
 using safeheron::bignum::BN;
+using safeheron::exception::LocatedException;
+using safeheron::exception::OpensslException;
+using safeheron::exception::BadAllocException;
+using safeheron::exception::RandomSourceException;
 
 TEST(Rand, random)
 {

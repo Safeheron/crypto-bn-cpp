@@ -357,7 +357,7 @@ public:
     /**
      * Return BIGNUM pointer of bn_
      */
-    bignum_st* bignum_st* GetBIGNUM() const() const;
+    const bignum_st* GetBIGNUM() const;
 
 public:
     /**
