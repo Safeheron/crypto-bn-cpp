@@ -7,19 +7,27 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter -Wno
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable")
 
 find_package(PkgConfig REQUIRED)
-if (NOT PkgConfig_FOUND)
-    message(FATAL_ERROR "PkgConfig Not Found!")
-endif (NOT PkgConfig_FOUND)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
+if(PkgConfig_FOUND )
+    MESSAGE(STATUS "============> Found PkgConfig!")
+endif(PkgConfig_FOUND )
+
+pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this looks for opencv.pc file
+if(PROTOBUF_FOUND )
+    message(STATUS "============> Found PROTOBUF!")
+    message(STATUS "PROTOBUF_INCLUDE_DIRS=${PROTOBUF_INCLUDE_DIRS}")
+    message(STATUS "PROTOBUF_LIBRARY_DIRS=${PROTOBUF_LIBRARY_DIRS}")
+    message(STATUS "PROTOBUF_LINK_LIBRARIES=${PROTOBUF_LINK_LIBRARIES}")
+    message(STATUS "PROTOBUF_LIBRARIES=${PROTOBUF_LIBRARIES}")
+endif(PROTOBUF_FOUND )
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
-if (NOT OpenSSL_FOUND)
-    message(FATAL_ERROR "OpenSSL Not Found!")
-endif (NOT OpenSSL_FOUND)
+if (OpenSSL_FOUND)
+    message(STATUS "============> Found OpenSSL!")
+    message(STATUS "OPENSSL_INCLUDE_DIR = ${OPENSSL_INCLUDE_DIR}")
+    message(STATUS "OPENSSL_LIBRARIES=${OPENSSL_LIBRARIES}")
+endif (OpenSSL_FOUND)
 
-message(STATUS "OPENSSL_INCLUDE_DIR = ${OPENSSL_INCLUDE_DIR}")
-message(STATUS "PROTOBUF_LIBRARY = ${PROTOBUF_LIBRARIES}")
 
 add_library(${PROJECT_NAME} SHARED
         crypto-bn/bn.cpp
@@ -31,7 +39,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${OPENSSL_INCLUDE_DIR}
         )
 
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${PROTOBUF_LIBRARIES}
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+        ${PROTOBUF_LINK_LIBRARIES}
         OpenSSL::Crypto
         -ldl
         )
