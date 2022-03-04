@@ -33,7 +33,7 @@ bool RandomBytes(unsigned char *buf, size_t size) {
 BN RandomBN(size_t byteSize) {
     BN n;
     std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
-    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
+    if (buf.get() == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
     do{
         RandomBytes(buf.get(), byteSize);
         n = BN::FromBytesBE(buf.get(), byteSize);
