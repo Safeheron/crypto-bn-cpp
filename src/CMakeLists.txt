@@ -14,18 +14,12 @@ endif(PkgConfig_FOUND )
 pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this looks for opencv.pc file
 if(PROTOBUF_FOUND )
     message(STATUS "============> Found PROTOBUF!")
-    message(STATUS "PROTOBUF_INCLUDE_DIRS=${PROTOBUF_INCLUDE_DIRS}")
-    message(STATUS "PROTOBUF_LIBRARY_DIRS=${PROTOBUF_LIBRARY_DIRS}")
-    message(STATUS "PROTOBUF_LINK_LIBRARIES=${PROTOBUF_LINK_LIBRARIES}")
-    message(STATUS "PROTOBUF_LIBRARIES=${PROTOBUF_LIBRARIES}")
 endif(PROTOBUF_FOUND )
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
 if (OpenSSL_FOUND)
     message(STATUS "============> Found OpenSSL!")
-    message(STATUS "OPENSSL_INCLUDE_DIR = ${OPENSSL_INCLUDE_DIR}")
-    message(STATUS "OPENSSL_LIBRARIES=${OPENSSL_LIBRARIES}")
 endif (OpenSSL_FOUND)
 
 
