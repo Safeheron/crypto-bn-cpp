@@ -124,132 +124,135 @@ int main(){
 
 ## Constructor
 
-- BN() - Construct a BN object and initialized it with 0.
-- BN(long i) - Construct a BN object and initialized it with word i.
-- BN(const char * str, int base) - Construct a BN objet and initialized it with str on specified base.
-- BN(const BN & num) - A copy constructor.
-- BN(BN && 	num	) A move constructor.
-- operator=(BN && num) - A move assignment.
-- operator=(const BN & 	num	) - A copy assignment.
+>- BN() - Construct a BN object and initialized it with 0.
+>- BN(long i) - Construct a BN object and initialized it with word i.
+>- BN(const char * str, int base) - Construct a BN objet and initialized it with str on specified base.
+>- BN(const BN & num) - A copy constructor.
+>- BN(BN && 	num	) A move constructor.
+
+>- operator=(BN && num) - A move assignment.
+>- operator=(const BN & 	num	) - A copy assignment.
 
 
 ## Bit operations
 
-- SetBit(unsigned long 	bit_index) - Set bits for this BN
-- ClearBit(unsigned long bit_index) - Clean bits for BN.
-- IsBitSet(unsigned long bit_index)	- Return true if this BN bit is set
-- BitLength() - Return bits size.
-- ByteLength() - Return bytes size.
-- operator<<(unsigned long ui) - Shift this to left by ui bits, and return the result
-- operator<<=(unsigned long ui) - Shift this to left by ui bits
-- operator>>(unsigned long 	ui)	- Shift this to right by ui bits, and return the result
-- operator>>=(unsigned long ui) - Shift this to right by ui bits
+>- SetBit(unsigned long 	bit_index) - Set bits for this BN
+>- ClearBit(unsigned long bit_index) - Clean bits for BN.
+>- IsBitSet(unsigned long bit_index)	- Return true if this BN bit is set
+>- BitLength() - Return bits size.
+>- ByteLength() - Return bytes size.
+
+>- operator<<(unsigned long ui) - Shift this to left by ui bits, and return the result
+>- operator<<=(unsigned long ui) - Shift this to left by ui bits
+>- operator>>(unsigned long 	ui)	- Shift this to right by ui bits, and return the result
+>- operator>>=(unsigned long ui) - Shift this to right by ui bits
 
 ## Convertors
 
-- FromBytesBE(const uint8_t * buf, int len) - [static] Construct a BN object from byte buffer, in big endian
-- FromBytesBE(std::string & buf) - [static] Construct a BN object from byte string, in big endian
+>- FromBytesBE(const uint8_t * buf, int len) - [static] Construct a BN object from byte buffer, in big endian
+>- FromBytesBE(std::string & buf) - [static] Construct a BN object from byte string, in big endian
 
-- FromBytesLE(const uint8_t * buf, int len) - [static] Construct a BN object from byte buffer, in little endian
-- FromBytesLE(std::string & buf) - [static] - Construct a BN object from byte string, in little endian
+>- FromBytesLE(const uint8_t * buf, int len) - [static] Construct a BN object from byte buffer, in little endian
+>- FromBytesLE(std::string & buf) - [static] - Construct a BN object from byte string, in little endian
 
-- FromDecStr(const char * 	str	) - [static] Construct a BN object from DEC char*
-- FromDecStr(const std::string & str) - [static] Construct a BN object from DEC string
+>- FromDecStr(const char * 	str	) - [static] Construct a BN object from DEC char*
+>- FromDecStr(const std::string & str) - [static] Construct a BN object from DEC string
 
-- FromHexStr(const char * 	str) - [static] Construct a BN object from HEX char*
-- FromHexStr(const std::string & str) - [static] Construct a BN object from HEX string
+>- FromHexStr(const char * 	str) - [static] Construct a BN object from HEX char*
+>- FromHexStr(const std::string & str) - [static] Construct a BN object from HEX string
 
-- ToBytes32BE(std::string & buf) - Convert this BN to 32 bytes buff, in big endian
-- ToBytes32BE(uint8_t * 	buf32, int 	blen = 32) - Convert this BN to 32 bytes string, in big endian
+>- ToBytes32BE(std::string & buf) - Convert this BN to 32 bytes buff, in big endian
+>- ToBytes32BE(uint8_t * 	buf32, int 	blen = 32) - Convert this BN to 32 bytes string, in big endian
 
-- ToBytes32LE(std::string & 	buf	) - Convert this BN to 32 bytes buff, in little endian
-- ToBytes32LE(uint8_t * 	buf32, int 	blen = 32) - Convert this BN to 32 bytes string, in little endian
+>- ToBytes32LE(std::string & 	buf	) - Convert this BN to 32 bytes buff, in little endian
+>- ToBytes32LE(uint8_t * 	buf32, int 	blen = 32) - Convert this BN to 32 bytes string, in little endian
 
-- ToBytesBE(std::string & 	buf	)	- Convert this BN to bytes string, in big endian
+>- ToBytesBE(std::string & 	buf	)	- Convert this BN to bytes string, in big endian
 
-- ToBytesLE(std::string & 	buf	)	- Convert this BN to bytes string, in little endian
+>- ToBytesLE(std::string & 	buf	)	- Convert this BN to bytes string, in little endian
 
-- ToDecStr(std::string & 	str	) - Convert this BN bits to a DEC string
+>- ToDecStr(std::string & 	str	) - Convert this BN bits to a DEC string
  
-- ToHexStr(std::string & 	str	) - Convert this BN bits to a HEX string
+>- ToHexStr(std::string & 	str	) - Convert this BN bits to a HEX string
 
 
 ## Arithmetics
-- operator+(const BN & num)	- Add the BN num with this, and return the result
-- operator+(long si) - Add the long value si with this, and return the result
-- operator+=(const BN & num) - Add the BN num with this
-- operator+=(long si) - Add the long value si with this
+>- operator+(const BN & num)	- Add the BN num with this, and return the result
+>- operator+(long si) - Add the long value si with this, and return the result
+>- operator+=(const BN & num) - Add the BN num with this
+>- operator+=(long si) - Add the long value si with this
 
 
-- operator-(const BN & num)	- Sub the BN num from this, and return the result
-- operator-(long si) - Sub the long value si from this, and return the result
-- operator-=(const BN & num) - Sub the BN num from this
-- operator-=(long si) - Sub the long value si from this
+>- operator-(const BN & num)	- Sub the BN num from this, and return the result
+>- operator-(long si) - Sub the long value si from this, and return the result
+>- operator-=(const BN & num) - Sub the BN num from this
+>- operator-=(long si) - Sub the long value si from this
 
 
-- operator*(const BN & num)	- Mul the BN num with this, and return the result
-- operator*(long si) - Mul the long value si with this, and return the result
-- operator*=(const BN & num) - Mul the BN num with this
-- operator*=(long si) - Mul the long value si with this
+>- operator*(const BN & num)	- Mul the BN num with this, and return the result
+>- operator*(long si) - Mul the long value si with this, and return the result
+>- operator*=(const BN & num) - Mul the BN num with this
+>- operator*=(long si) - Mul the long value si with this
 
 
-- operator/(const BN & num)	- Div the BN num with this, and return the result
-- operator/(long si) - Div the long value si with this, and return the result
-- operator/=(const BN & num) - Div the BN num by this
-- operator/=(long si) - Div the long value si with this
+>- operator/(const BN & num)	- Div the BN num with this, and return the result
+>- operator/(long si) - Div the long value si with this, and return the result
+>- operator/=(const BN & num) - Div the BN num by this
+>- operator/=(long si) - Div the long value si with this
 
 
-- operator%(const BN & num)	- Mod the BN num with this, and return the result
-- operator%(unsigned long ui) - Mod the ULONG value ui with this, and return the result
+>- operator%(const BN & num)	- Mod the BN num with this, and return the result
+>- operator%(unsigned long ui) - Mod the ULONG value ui with this, and return the result
 
 
-- Neg() - Return the negative of this
+>- Neg() - Return the negative of this
 
 ## Comparison
-- operator==(const BN & num) - Return true if this._bn == num._bn
-- operator==(long num) - Return true if this._bn == num._bn
+>- operator==(const BN & num) - Return true if this._bn == num._bn
+>- operator==(long num) - Return true if this._bn == num._bn
 
 
-- operator!=(const BN & num) - Return true if this._bn != num._bn
-- operator!=(long num) - Return true if this._bn != num._bn
+>- operator!=(const BN & num) - Return true if this._bn != num._bn
+>- operator!=(long num) - Return true if this._bn != num._bn
 
 
-- operator<=(const BN & num) - Return true if this._bn <= num._bn
-- operator<=(long si) - Return true if this._bn <= si
+>- operator<=(const BN & num) - Return true if this._bn <= num._bn
+>- operator<=(long si) - Return true if this._bn <= si
 
 
-- operator<(const BN & num)	- Return true if this._bn < num._bn
-- operator<(long si) - Return true if this._bn < si
+>- operator<(const BN & num)	- Return true if this._bn < num._bn
+>- operator<(long si) - Return true if this._bn < si
 
 
-- operator>(const BN & num)	- Return true if this._bn > num._bn
-- operator>(long si) - Return true if this._bn > si
+>- operator>(const BN & num)	- Return true if this._bn > num._bn
+>- operator>(long si) - Return true if this._bn > si
 
 
-- operator>=(const BN & num) - Return true if this._bn >= num._bn
-- operator>=(long 	si) - Return true if this._bn >= si
+>- operator>=(const BN & num) - Return true if this._bn >= num._bn
+>- operator>=(long 	si) - Return true if this._bn >= si
 
 ## Auxiliary
 
-- IsEven() - Return true if this BN is a even number
-- IsNeg() - Return true if this BN is a negative number
-- IsOdd() - Return true if this BN is an odd number
-- IsZero() - Return true if this BN is 0
-- Max(const BN & a, const BN & 	b) - [static] Return the max one between a and b
-- Min(const BN & a, const BN & 	b) - [static] Return the min one between a and b
-- Swap(BN & a, BN & b) - [static] Swap the values between a and b
+>- IsEven() - Return true if this BN is a even number
+>- IsNeg() - Return true if this BN is a negative number
+>- IsOdd() - Return true if this BN is an odd number
+>- IsZero() - Return true if this BN is 0
+
+>- Max(const BN & a, const BN & 	b) - [static] Return the max one between a and b
+>- Min(const BN & a, const BN & 	b) - [static] Return the min one between a and b
+>- Swap(BN & a, BN & b) - [static] Swap the values between a and b
 
 ## Number Theory
 
-- IsProbablyPrime()	- Return true is this is a prime, otherwise return false
-- Div(const BN & d,  BN & q, BN & r) - Return quotient q = this / d and remainder r = this % d.
-- SqrtM(const BN & p) - Get square root on modulo m Return 'r' such that r^2 == this (mod p),
-- ExistSqrtM(const BN & p) - Return sqrt mod is exist or not.
-- Gcd(const BN & n)	- Return the greatest common divisor of this and n
-- Inspect(int base = 16) - Return the string of this BN
-- InvM(const BN & m) - Return the inverse of (this modulo m) Compute the inverse modulo mod. Be careful, mode must be prime!!!
-- Lcm(const BN & n)	const Return the least common multiple of this and n. lcm(a, b) = ab/gcd(a,b))
-- PowM(const BN & y, const BN & m) - Return the y-th power of this and modulo m r = (this ^ y) % m
+>- IsProbablyPrime()	- Return true is this is a prime, otherwise return false
+>- Div(const BN & d,  BN & q, BN & r) - Return quotient q = this / d and remainder r = this % d.
+>- SqrtM(const BN & p) - Get square root on modulo m Return 'r' such that r^2 == this (mod p),
+>- ExistSqrtM(const BN & p) - Return sqrt mod is exist or not.
+>- Gcd(const BN & n)	- Return the greatest common divisor of this and n
+>- Inspect(int base = 16) - Return the string of this BN
+>- InvM(const BN & m) - Return the inverse of (this modulo m) Compute the inverse modulo mod. Be careful, mode must be prime!!!
+>- Lcm(const BN & n)	const Return the least common multiple of this and n. lcm(a, b) = ab/gcd(a,b))
+>- PowM(const BN & y, const BN & m) - Return the y-th power of this and modulo m r = (this ^ y) % m
 
 
 # License
