@@ -32,22 +32,22 @@ public:
     explicit BN(const char *str, int base);
     /**
      * A copy constructor
-     * Dump the BIGNUM object from num
+     * Dump the BN object from num
     */
     BN(const BN &num);
     /**
      * A copy assignment constructor
-     * Return a copy BIGNUM object from num
+     * Return a copy BN object from num
     */
     BN &operator=(const BN &num);
     /**
      * A move constructor
-     * move BIGNUM object pointer from num to this
+     * move BN object pointer from num to this
     */
     BN(BN &&num) noexcept;
     /**
      * A move assignment
-     * move BIGNUM object pointer from num to this, and return it
+     * move BN object pointer from num to this, and return it
     */
     BN &operator=(BN &&num) noexcept;
     /**
@@ -55,35 +55,35 @@ public:
     */
     virtual ~BN();
     /**
-     * Add the BIGNUM num with this, and return the result
+     * Add the BN num with this, and return the result
     */
     BN operator+(const BN &num) const;
     /**
-     * Sub the BIGNUM num from this, and return the result
+     * Sub the BN num from this, and return the result
     */
     BN operator-(const BN &num) const;
     /**
-     * Mul the BIGNUM num with this, and return the result
+     * Mul the BN num with this, and return the result
     */
     BN operator*(const BN &num) const;
     /**
-     * Div the BIGNUM num with this, and return the result
+     * Div the BN num with this, and return the result
     */
     BN operator/(const BN &num) const;
     /**
-     * Add the BIGNUM num with this
+     * Add the BN num with this
     */
     BN &operator+=(const BN &num);
     /**
-     * Sub the BIGNUM num from this
+     * Sub the BN num from this
     */
     BN &operator-=(const BN &num);
     /**
-     * Mul the BIGNUM num with this
+     * Mul the BN num with this
     */
     BN &operator*=(const BN &num);
     /**
-     * Div the BIGNUM num by this
+     * Div the BN num by this
     */
     BN &operator/=(const BN &num);
     /**
@@ -119,7 +119,7 @@ public:
     */
     BN &operator/=(long n);
     /**
-     * Mod the BIGNUM num with this, and return the result
+     * Mod the BN num with this, and return the result
     */
     BN operator%(const BN &num) const;
     /**
@@ -249,11 +249,11 @@ public:
     */
     static BN FromDecStr(const std::string &str);
     /**
-     * Convert this BIGNUM bits to a HEX string
+     * Convert this BN bits to a HEX string
     */
     void ToHexStr(std::string &str) const;
     /**
-     * Convert this BIGNUM bits to a DEC string
+     * Convert this BN bits to a DEC string
     */
     void ToDecStr(std::string &str) const;
     /**
@@ -273,41 +273,41 @@ public:
     */
     static BN FromBytesLE(std::string &buf);
     /**
-     * Convert this BIGNUM to bytes string, in big endian
+     * Convert this BN to bytes string, in big endian
     */
     void ToBytesBE(std::string &buf) const;
     /**
-     * Convert this BIGNUM to bytes string, in little endian
+     * Convert this BN to bytes string, in little endian
     */
     void ToBytesLE(std::string &buf) const;
     /**
-     * Convert this BIGNUM to 32 bytes buff, in big endian
+     * Convert this BN to 32 bytes buff, in big endian
     */
     void ToBytes32BE(std::string &buf) const;
     /**
-     * Convert this BIGNUM to 32 bytes buff, in little endian
+     * Convert this BN to 32 bytes buff, in little endian
     */
     void ToBytes32LE(std::string &buf) const;
     /**
-     * Convert this BIGNUM to 32 bytes string, in big endian
+     * Convert this BN to 32 bytes string, in big endian
     */
     void ToBytes32BE(uint8_t *buf32, int blen=32) const;
     /**
-     * Convert this BIGNUM to 32 bytes string, in little endian
+     * Convert this BN to 32 bytes string, in little endian
     */
     void ToBytes32LE(uint8_t *buf32, int blen=32) const;
     /**
-     * Hold no a new BIGNUM object specified by bn
+     * Hold no a new BN object specified by bn
      * bn should be new and initialized before calling this API，
      * and don't free it by hand, it will be freed auto in distruction
     */
     void Hold(bignum_st* bn);
     /**
-     * Return bits size of this BIGNUM
+     * Return bits size of this BN
     */
     int BitLength() const;
     /**
-     * Return bytes size of this BIGNUM
+     * Return bytes size of this BN
     */
     int ByteLength() const;
     /**
@@ -339,19 +339,19 @@ public:
     */
     static void Swap(BN &a, BN &b);
     /**
-     * Set bits for this BIGNUM
+     * Set bits for this BN
     */
     void SetBit(unsigned long bit_index);
     /**
-     * Clean bits for this BIGNUM
+     * Clean bits for this BN
     */
     void ClearBit(unsigned long bit_index);
     /**
-     * Return true if this BIGNUM bit is set
+     * Return true if this BN bit is set
     */
     bool IsBitSet(unsigned long bit_index) const;
     /**
-     * Return the string of this BIGNUM
+     * Return the string of this BN
     */
     std::string Inspect(int base = 16) const;
     /**

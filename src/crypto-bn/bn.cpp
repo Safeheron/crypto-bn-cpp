@@ -135,7 +135,7 @@ BN::~BN()
 }
 /**
  * A copy constructor
- * Dump the BIGNUM object from num
+ * Dump the BN object from num
 */
 BN::BN(const BN &num)
         : bn_(nullptr)
@@ -146,7 +146,7 @@ BN::BN(const BN &num)
 }
 /**
  * A copy assignment
- * Return a copy BIGNUM object from num
+ * Return a copy BN object from num
 */
 BN &BN::operator=(const BN &num)
 {
@@ -161,7 +161,7 @@ BN &BN::operator=(const BN &num)
 }
 /**
  * A move constructor
- * move BIGNUM object pointer from num to this
+ * move BN object pointer from num to this
 */
 BN::BN(BN &&num) noexcept
         : bn_(nullptr)
@@ -171,7 +171,7 @@ BN::BN(BN &&num) noexcept
 }
 /**
  * A move assignment
- * move BIGNUM object pointer from num to this, and return it
+ * move BN object pointer from num to this, and return it
 */
 BN &BN::operator=(BN &&num) noexcept
 {
@@ -187,7 +187,7 @@ BN &BN::operator=(BN &&num) noexcept
     return *this;
 }
 /**
- * Add the BIGNUM num with this, and return the result
+ * Add the BN num with this, and return the result
 */
 BN BN::operator+(const BN &num) const
 {
@@ -200,7 +200,7 @@ BN BN::operator+(const BN &num) const
     return n;
 }
 /**
- * Sub the BIGNUM num from this, and return the result
+ * Sub the BN num from this, and return the result
 */
 BN BN::operator-(const BN &num) const
 {
@@ -213,7 +213,7 @@ BN BN::operator-(const BN &num) const
     return n;
 }
 /**
- * Mul the BIGNUM num with this, and return the result
+ * Mul the BN num with this, and return the result
 */
 BN BN::operator*(const BN &num) const
 {
@@ -236,7 +236,7 @@ BN BN::operator*(const BN &num) const
     return n;
 }
 /**
- * Div the BIGNUM num with this, and return the result
+ * Div the BN num with this, and return the result
 */
 BN BN::operator/(const BN &num) const
 {
@@ -259,7 +259,7 @@ BN BN::operator/(const BN &num) const
     return n;
 }
 /**
- * Add the BIGNUM num with this
+ * Add the BN num with this
 */
 BN &BN::operator+=(const BN &num)
 {
@@ -271,7 +271,7 @@ BN &BN::operator+=(const BN &num)
     return *this;
 }
 /**
- * Sub the BIGNUM num from this
+ * Sub the BN num from this
 */
 BN &BN::operator-=(const BN &num)
 {
@@ -283,7 +283,7 @@ BN &BN::operator-=(const BN &num)
     return *this;
 }
 /**
- * Mul the BIGNUM num with this
+ * Mul the BN num with this
 */
 BN &BN::operator*=(const BN &num)
 {
@@ -305,7 +305,7 @@ BN &BN::operator*=(const BN &num)
     return *this;
 }
 /**
- * Div the BIGNUM num by this
+ * Div the BN num by this
 */
 BN &BN::operator/=(const BN &num)
 {
@@ -493,7 +493,7 @@ BN &BN::operator/=(long si)
     return *this;
 }
 /**
- * Mod the BIGNUM num with this, and return the result
+ * Mod the BN num with this, and return the result
 */
 BN BN::operator%(const BN &num) const
 {
@@ -865,7 +865,7 @@ BN BN::FromDecStr(const std::string &str)
     return BN::FromDecStr(str.c_str());
 }
 /**
- * Convert this BIGNUM bits to a HEX string
+ * Convert this BN bits to a HEX string
 */
 void BN::ToHexStr(std::string &str) const
 {
@@ -879,7 +879,7 @@ void BN::ToHexStr(std::string &str) const
     ch = nullptr;
 }
 /**
- * Convert this BIGNUM bits to a DEC string
+ * Convert this BN bits to a DEC string
 */
 void BN::ToDecStr(std::string &str) const
 {
@@ -933,7 +933,7 @@ BN BN::FromBytesLE(std::string &buf)
     return FromBytesLE((const uint8_t *)buf.c_str(), buf.length());
 }
 /**
- * Convert this BIGNUM to bytes string, in big endian
+ * Convert this BN to bytes string, in big endian
 */
 void BN::ToBytesBE(std::string &buf) const
 {
@@ -960,7 +960,7 @@ void BN::ToBytesBE(std::string &buf) const
     ch = nullptr;
 }
 /**
- * Convert this BIGNUM to bytes string, in little endian
+ * Convert this BN to bytes string, in little endian
 */
 void BN::ToBytesLE(std::string &buf) const
 {
@@ -987,7 +987,7 @@ void BN::ToBytesLE(std::string &buf) const
     ch = nullptr;
 }
 /**
- * Convert this BIGNUM to 32 bytes buff, in big endian
+ * Convert this BN to 32 bytes buff, in big endian
 */
 void BN::ToBytes32BE(uint8_t *buf32, int blen) const
 {
@@ -1024,7 +1024,7 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
     ch = nullptr;
 }
 /**
- * Convert this BIGNUM to 32 bytes buff, in little endian
+ * Convert this BN to 32 bytes buff, in little endian
 */
 void BN::ToBytes32LE(uint8_t *buf32, int blen) const
 {
@@ -1060,7 +1060,7 @@ void BN::ToBytes32LE(uint8_t *buf32, int blen) const
     ch = nullptr;
 }
 /**
- * Convert this BIGNUM to 32 bytes string, in big endian
+ * Convert this BN to 32 bytes string, in big endian
 */
 void BN::ToBytes32BE(std::string &buf) const
 {
@@ -1069,7 +1069,7 @@ void BN::ToBytes32BE(std::string &buf) const
     buf.assign((const char *)t_buf32, 32);
 }
 /**
- * Convert this BIGNUM to 32 bytes string, in little endian
+ * Convert this BN to 32 bytes string, in little endian
 */
 void BN::ToBytes32LE(std::string &buf) const
 {
@@ -1078,7 +1078,7 @@ void BN::ToBytes32LE(std::string &buf) const
     buf.assign((const char *)t_buf32, 32);
 }
 /**
- * Hold no a new BIGNUM object specified by bn
+ * Hold no a new BN object specified by bn
  * bn should be new and initialized before calling this API，
  * and don't free it by hand, it will be freed auto in distruction
 */
@@ -1092,14 +1092,14 @@ void BN::Hold(bignum_st* bn)
     bn_ = bn;
 }
 /**
- * Return bits size of this BIGNUM
+ * Return bits size of this BN
 */
 int BN::BitLength() const
 {
     return BN_num_bits(bn_);
 }
 /**
- * Return bytes size of this BIGNUM
+ * Return bytes size of this BN
 */
 int BN::ByteLength() const
 {
@@ -1157,7 +1157,7 @@ void BN::Swap(BN &a, BN &b)
     BN_swap(a.bn_, b.bn_);
 }
 /**
- * Set bits for this BIGNUM
+ * Set bits for this BN
 */
 void BN::SetBit(unsigned long bit_index)
 {
@@ -1169,7 +1169,7 @@ void BN::SetBit(unsigned long bit_index)
     }
 }
 /**
- * Clean bits for this BIGNUM
+ * Clean bits for this BN
 */
 void BN::ClearBit(unsigned long bit_index)
 {
@@ -1181,7 +1181,7 @@ void BN::ClearBit(unsigned long bit_index)
     }
 }
 /**
- * Return true if this BIGNUM bit is set
+ * Return true if this BN bit is set
 */
 bool BN::IsBitSet(unsigned long bit_index) const
 {
@@ -1189,7 +1189,7 @@ bool BN::IsBitSet(unsigned long bit_index) const
     return BN_is_bit_set(bn_, bit_index) == 1;
 }
 /**
- * Return the string of this BIGNUM
+ * Return the string of this BN
 */
 std::string BN::Inspect(int base) const
 {
