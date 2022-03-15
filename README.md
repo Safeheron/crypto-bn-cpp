@@ -76,7 +76,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CryptoBN_INCLUDE_DIRS}
 )
 
-target_link_libraries( bn-test PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC
     CryptoBN
     OpenSSL::Crypto
     pthread 
