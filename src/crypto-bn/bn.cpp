@@ -18,6 +18,53 @@ using safeheron::exception::RandomSourceException;
 namespace safeheron {
 namespace bignum {
 
+
+// convert binary string to hex str
+static std::string bin2hex(const std::string &s) {
+    const char chs[17] = "0123456789ABCDEF";
+    std::string padded_str;
+    std::string out;
+    uint size = 0;
+    // Range of valid hex
+    uint start = 0;
+    uint end = 0;
+
+    size = s.size();
+
+    // neg
+    if (s[0] == '-') {
+        out.push_back('-');
+        start++;
+        end++;
+    }else if (s[0] == '+'){
+        start++;
+        end++;
+    }
+    for (size_t i = start; i < s.size(); ++i) {
+        if(s.at(i) != '0' && s.at(i) != '1') break;
+        end++;
+    }
+    if(end == start) return out;
+    // convert 4 bin chars to 1 hex char
+    size_t pad = 4 - (end - start) % 4;
+    uint8_t c = 0;
+    for (size_t i = start; i < end; ++i){
+        if(s.at(i) == '0'){
+            c <<= 1;
+        }else{
+            c <<= 1;
+            c += 1;
+        }
+        if((pad + i - start + 1) % 4 == 0){
+            out.push_back(chs[c & 0x0F]);
+            c = 0;
+        }
+    }
+
+    return out;
+}
+
+
 /**
  * const variables definition
 */
@@ -89,10 +136,7 @@ BN::BN(const char *str, int base)
     {
         case 2:
         {
-            std::string hex_str;
-            std::stringstream ss;
-            ss << std::hex << std::stoi(str, nullptr, 2);
-            ss >> hex_str;
+            std::string hex_str = bin2hex(str);
             if ((ret = BN_hex2bn(&bn_, hex_str.c_str())) <= 0) {
                 BN_clear_free(bn_);
                 bn_ = nullptr;
