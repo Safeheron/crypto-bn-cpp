@@ -19,7 +19,6 @@ target_link_directories(bn-test PUBLIC ${PROTOBUF_LIBRARY_DIRS})
 target_link_libraries( bn-test
         CryptoBN
         ${GTEST_BOTH_LIBRARIES}
-        ${PROTOBUF_LIBRARIES}
         pthread )
 add_test(NAME test-bn COMMAND bn-test)
 
@@ -28,7 +27,6 @@ target_link_directories(rnd-test PUBLIC ${PROTOBUF_LIBRARY_DIRS})
 target_link_libraries( rnd-test
         CryptoBN
         ${GTEST_BOTH_LIBRARIES}
-        ${PROTOBUF_LIBRARIES}
         pthread )
 add_test(NAME test_rnd COMMAND rnd-test)
 

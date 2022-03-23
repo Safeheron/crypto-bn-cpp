@@ -3,7 +3,6 @@
 //
 #include <cstdio>
 #include <ctime>
-#include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
 #include "crypto-bn/rand.h"
 #include "exception/safeheron_exceptions.h"
@@ -143,6 +142,5 @@ TEST(Rand, SafePrimes)
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
-    google::protobuf::ShutdownProtobufLibrary();
     return ret;
 }
