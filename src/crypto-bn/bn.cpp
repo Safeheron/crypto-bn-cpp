@@ -24,12 +24,9 @@ static std::string bin2hex(const std::string &s) {
     const char chs[17] = "0123456789ABCDEF";
     std::string padded_str;
     std::string out;
-    uint size = 0;
     // Range of valid hex
     uint start = 0;
     uint end = 0;
-
-    size = s.size();
 
     // neg
     if (s[0] == '-') {
