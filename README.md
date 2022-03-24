@@ -22,7 +22,7 @@ More platforms such as Windows would be supported soon.
 
 # Prerequisites
 
-- [OpenSSL](https://github.com/openssl/openssl#documentation)
+- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
 
 ## Installing OpenSSL on Linux
 - CentOS / Red Hat
