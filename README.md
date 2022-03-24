@@ -4,6 +4,10 @@
 
 Cross-platform library of big number in C++.
 
+# Prerequisites
+
+- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
+
 # Build and Install
 
 Linux and Mac are supported now.  After obtaining the Source, have a look at the installation script. 
@@ -20,30 +24,6 @@ sudo make install
 
 More platforms such as Windows would be supported soon.
 
-# Prerequisites
-
-- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
-
-## Installing OpenSSL on Linux
-- CentOS / Red Hat
-By default, OpenSSL is already included in CentOS. If this is not the case with your instance, then run the following command line:
-
-```shell
-yum install openssl
-```
-- Ubuntu
-By default, OpenSSL is already included in Ubuntu. If this is not the case with your instance, then run the following command line:
-
-```shell
-apt install openssl
-```
-
-## Installing OpenSSL on macOS
-By default, OpenSSL is already installed in macOS. However, your version may be outdated. If so, then you can install the latest version with Homebrew. After installing Homebrew, simply run the following command line:
-
-```shell
-brew install openssl
-```
 
 # To start using crypto-bn-cpp
 
