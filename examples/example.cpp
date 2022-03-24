@@ -1,7 +1,6 @@
 //
 // Created by 何剑虹 on 2020/10/22.
 //
-#include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
 #include <crypto-bn/bn.h>
 #include <crypto-bn/rand.h>
@@ -592,6 +591,5 @@ TEST(BN, FromAndTo)
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
-    google::protobuf::ShutdownProtobufLibrary();
     return ret;
 }

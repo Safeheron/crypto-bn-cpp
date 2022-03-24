@@ -62,14 +62,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE "Release")
 
 find_package(OpenSSL REQUIRED)
-if (OpenSSL_FOUND)
-    message(STATUS "============> Found OpenSSL!")
-endif (OpenSSL_FOUND)
-
 find_package(CryptoBN REQUIRED)
-if(CryptoBN_FOUND )
-    MESSAGE(STATUS "============> Found CryptoBN!")
-endif(CryptoBN_FOUND )
 
 add_executable(${PROJECT_NAME} XXXX.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -254,5 +247,8 @@ int main(){
 >- Lcm(const BN & n)	const Return the least common multiple of this and n. lcm(a, b) = ab/gcd(a,b))
 >- PowM(const BN & y, const BN & m) - Return the y-th power of this and modulo m r = (this ^ y) % m
 
+
+# Development Process & Contact
+This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail or join Safeheron Telegram for discussions on code and research.
 
 # License

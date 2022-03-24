@@ -96,13 +96,15 @@ TEST(Rand, TestExecption)
 {
     BN n;
     try{
-        n = safeheron::rand::RandomBN(32000000000000);
+        n = safeheron::rand::RandomBN(32000000000);
     }catch(const BadAllocException &e) {
         std::cout << "Catch BadAllocException: " << e.detail() << std::endl;
     }catch(const RandomSourceException &e) {
         std::cout << "Catch RandomSourceException: " << e.detail() << std::endl;
     }catch(const LocatedException &e) {
         std::cout << "Catch LocatedException: " << e.detail() << std::endl;
+    }catch(const std::exception &e) {
+        std::cout << "Catch LocatedException: " << e.what() << std::endl;
     }
     std::cout << n.Inspect() << std::endl;
 }

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(test)
+project(example)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE "Release")
@@ -7,38 +7,20 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 find_package(PkgConfig REQUIRED)
-if(PkgConfig_FOUND )
-    MESSAGE(STATUS "============> Found PkgConfig!")
-endif(PkgConfig_FOUND )
-
 pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this looks for opencv.pc file
-if(PROTOBUF_FOUND )
-    message(STATUS "============> Found PROTOBUF!")
-endif(PROTOBUF_FOUND )
 
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
-if (OpenSSL_FOUND)
-    message(STATUS "============> Found OpenSSL!")
-endif (OpenSSL_FOUND)
-
 find_package(CryptoBN REQUIRED)
-if(CryptoBN_FOUND )
-    MESSAGE(STATUS "============> Found CryptoBN!")
-endif(CryptoBN_FOUND )
-
 find_package(GTest REQUIRED)
-if(GTest_FOUND )
-    MESSAGE(STATUS "============> Found GTest!")
-endif(GTest_FOUND )
 
-add_executable(bn-test bn-test.cpp)
-target_include_directories(bn-test PUBLIC
+add_executable(${PROJECT_NAME} example.cpp)
+target_include_directories(${PROJECT_NAME} PUBLIC
     ${CryptoBN_INCLUDE_DIRS}
     ${GTEST_INCLUDE_DIRS}
     )
 
-target_link_libraries( bn-test PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC
     CryptoBN
     ${GTEST_BOTH_LIBRARIES}
     pthread )
