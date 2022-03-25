@@ -18,7 +18,7 @@ cd crypto-bn-cpp
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
 cmake ..
-cmake
+make
 make test
 sudo make install
 ```
