@@ -561,12 +561,7 @@ BN BN::operator%(const BN &num) const
 */
 BN BN::operator%(unsigned long ui) const
 {
-    int ret = 0;
-    assert(bn_);
-    if ((ret = BN_mod_word(bn_, ui)) == -1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
-    }
-    return BN(ret);
+    return *this % BN(ui);
 }
 /**
  * Shift this to left by ui bits, and return the result
