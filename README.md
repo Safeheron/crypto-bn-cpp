@@ -228,6 +228,8 @@ int main(){
 >- Lcm(const BN & n)	const Return the least common multiple of this and n. lcm(a, b) = ab/gcd(a,b))
 >- PowM(const BN & y, const BN & m) - Return the y-th power of this and modulo m r = (this ^ y) % m
 
+# Some features
+Refer to [Some Features.md](./Some Features.md)
 
 # Development Process & Contact
 This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail or join Safeheron Telegram for discussions on code and research.

@@ -222,10 +222,17 @@ public:
      * Get square root on modulo m
      * Return 'r' such that
      *      r^2 == this (mod p),
-    */
+     *
+     * Warning: you should check if a square root exists before you invoke the function like this:
+     *      if(!a.ExistSqrtM(p)) return false;
+     *      BN root = a.SqrtM(p);
+     *
+     * @param m
+     * @return
+     */
     BN SqrtM(const BN &m) const;
     /**
-     * Return sqrt mod is exist or not
+     * Return true if sqare root is exist;
     */
     bool ExistSqrtM(const BN &m) const;
     /**
