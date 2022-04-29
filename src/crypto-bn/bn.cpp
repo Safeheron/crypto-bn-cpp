@@ -1242,6 +1242,75 @@ std::string BN::Inspect(int base) const
 }
 
 /**
+ * Extended Euclidean algorithm:
+ *     - Given a, b
+ *     - Compute x, y, d, so that  ax + by = d
+ *
+ * def ext_euclid(a, b):
+    old_s, s = 1, 0
+    old_t, t = 0, 1
+    old_r, r = a, b
+    if b == 0:
+        return 1, 0, a
+    else:
+        while(r!=0):
+            q = old_r // r
+            old_r, r = r, old_r-q*r
+            old_s, s = s, old_s-q*s
+            old_t, t = t, old_t-q*t
+    return old_s, old_t, old_r
+ * @param a
+ * @param b
+ * @param d
+ * @param x
+ * @param y
+ */
+void BN::ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d){
+    bool is_a_neg = false;
+    bool is_b_neg = false;
+    BN t_a = a;
+    BN t_b = b;
+    if(t_a < 0) {
+        is_a_neg = true;
+        t_a = t_a.Neg();
+    }
+    if(t_b < 0) {
+        is_b_neg = true;
+        t_b = t_b.Neg();
+    }
+
+    BN old_s(1), s(0);
+    BN old_t(0), t(1);
+    BN old_r(a), r(b);
+
+    if(t_b == 0) {
+        d = t_a;
+        x = BN(1);
+        y = BN(0);
+        return;
+    }
+
+    while(r != 0){
+        BN q = old_r / r;
+        // old_r, r = r, old_r-q*r
+        old_r = old_r - q * r;
+        BN::Swap(old_r, r);
+        // old_s, s = s, old_s-q*s
+        old_s = old_s - q * s;
+        BN::Swap(old_s, s);
+        // old_t, t = t, old_t-q*t
+        old_t = old_t - q * t;
+        BN::Swap(old_t, t);
+    }
+    d = old_r;
+    x = old_s;
+    y = old_t;
+
+    if(is_a_neg) x = x.Neg();
+    if(is_b_neg) y = y.Neg();
+}
+
+/**
  * Return BIGNUM pointer of bn_
  */
 const bignum_st* BN::GetBIGNUM() const

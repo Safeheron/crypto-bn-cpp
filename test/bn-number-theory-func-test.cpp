@@ -230,6 +230,37 @@ TEST(BN, ModPow)
     std::cout << double(end - start)/CLOCKS_PER_SEC << std::endl;
 }
 
+TEST(BN, ExtendedEuclidean)
+{
+    // Given a, b, compute x, y, d, st. ax + by = d
+    BN a(6);
+    BN b(8);
+    BN x, y, d;
+    BN::ExtendedEuclidean(a, b, x, y, d);
+    EXPECT_TRUE(d == 2);
+    std::cout<< "d: " << d.Inspect() << std::endl;
+    EXPECT_TRUE(x == -1);
+    std::cout<< "x: " << x.Inspect() << std::endl;
+    EXPECT_TRUE(y == 1);
+    std::cout<< "y: " << y.Inspect() << std::endl;
+
+    // Given a, b, compute x, y, d, st. ax + by = d
+    a = BN(3);
+    b = BN(4);
+    BN::ExtendedEuclidean(a, b, x, y, d);
+    EXPECT_TRUE(d == 1);
+    EXPECT_TRUE(x == -1);
+    EXPECT_TRUE(y == 1);
+
+    // Given a, b, compute x, y, d, st. ax + by = d
+    a = BN(4);
+    b = BN(3);
+    BN::ExtendedEuclidean(a, b, x, y, d);
+    EXPECT_TRUE(d == 1);
+    EXPECT_TRUE(x == 1);
+    EXPECT_TRUE(y == -1);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

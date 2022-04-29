@@ -361,6 +361,20 @@ public:
      * Return the string of this BN
     */
     std::string Inspect(int base = 16) const;
+
+    /**
+     * Extended Euclidean algorithm
+     *
+     *      ax + by = d
+     *
+     * @param a
+     * @param b
+     * @param d greatest common divider of a and b.
+     * @param x
+     * @param y
+     */
+    static void ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d);
+
     /**
      * Return BIGNUM pointer of bn_
      */
