@@ -107,5 +107,13 @@ BN RandomBNLtGcd(const BN &max) {
     }while (n.Gcd(max) != 1);
     return n;
 }
+
+BN RandomBNLtCoPrime(const BN &max) {
+    BN n;
+    do{
+        n = RandomBNLt(max);
+    }while (n.Gcd(max) != 1);
+    return n;
+}
 }
 }

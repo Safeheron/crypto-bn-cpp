@@ -793,12 +793,13 @@ BN BN::Lcm(const BN &n) const
 BN BN::PowM(const BN &y, const BN &m) const
 {
     BN r;
+    BN t_y = y.IsNeg()? y.Neg() : y;
     BN_CTX* ctx = nullptr;
     int ret = 0;
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
     }
-    if ((ret = BN_mod_exp(r.bn_, bn_, y.bn_, m.bn_, ctx)) != 1) {
+    if ((ret = BN_mod_exp(r.bn_, bn_, t_y.bn_, m.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
@@ -806,7 +807,7 @@ BN BN::PowM(const BN &y, const BN &m) const
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
-    return r;
+    return y.IsNeg()? r.InvM(m): r;
 }
 /**
  * Return 'r' such that
@@ -1308,6 +1309,60 @@ void BN::ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d){
 
     if(is_a_neg) x = x.Neg();
     if(is_b_neg) y = y.Neg();
+}
+
+/**
+ * Compute jacobi symbol (k, n)
+ *
+ * Refer to the page: https://en.wikipedia.org/wiki/Jacobi_symbol
+ *
+ * The above formulas lead to an efficient O(log a log b)[3] algorithm for calculating the Jacobi symbol, analogous to the Euclidean algorithm for finding the gcd of two numbers. (This should not be surprising in light of rule 2.)
+ *     1. Extract any even "numerator" using rule 9.
+ *     2. Reduce the "numerator" modulo the "denominator" using rule 2.
+ *     3. Extract any even "numerator" using rule 9.
+ *     4. If the "numerator" is 1, rules 3 and 4 give a result of 1. If the "numerator" and "denominator" are not coprime, rule 3 gives a result of 0.
+ *     5. Otherwise, the "numerator" and "denominator" are now odd positive coprime integers, so we can flip the symbol using rule 6, then return to step 1.
+ * @param k
+ * @param n
+ * @return
+ */
+int BN::JacobiSymbol(const BN &_k, const BN &_n){
+    int symbol = 1;
+    BN n = _n;
+    BN k = _k;
+    BN r;
+    // Check n: n is positive and odd
+    if (n <= 0 || n.IsEven()) {
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+    }
+
+    // Rule 2
+    k = k % n;
+    while (k != 0){
+        // Rule 9
+        while (k.IsEven()){
+            k >>= 1;
+            r = n % 8;
+            if( r == 3 || r == 5){
+                symbol = -1 * symbol;
+            }
+        }
+        // Rule 6
+        BN::Swap(k, n);
+        if( (n % 4 == 3) && (k % 4 == 3) ){
+            symbol = -1 * symbol;
+        }
+        // Rule 2
+        k = k % n;
+    }
+    if(n == 1){
+        // Here (0, 1) actual comes from (1, n). And (1, n) = 1.
+        // Return s * (1, n) = s
+        return symbol;
+    }else{
+        // If the "numerator" and "denominator" are not coprime, rule 3 gives a result of 0.
+        return 0;
+    }
 }
 
 /**

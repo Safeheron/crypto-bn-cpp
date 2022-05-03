@@ -230,6 +230,19 @@ TEST(BN, ModPow)
     std::cout << double(end - start)/CLOCKS_PER_SEC << std::endl;
 }
 
+TEST(BN, ModPow2)
+{
+    BN b2(2);
+    BN b3(3);
+    BN b7(7);
+    // 3^2 mod 7 = 2
+    EXPECT_TRUE(b3.PowM(b2, b7) == 2);
+    // 3^(-2) mod 7 = (3^2)^-1 mod 7 = 2^-1 mod 7 = 4
+    EXPECT_TRUE(b3.PowM(b2.Neg(), b7) == 4);
+    // 3^3 mod 7 = 6
+    EXPECT_TRUE(b3.PowM(b3, b7) == 6);
+}
+
 TEST(BN, ExtendedEuclidean)
 {
     // Given a, b, compute x, y, d, st. ax + by = d
@@ -259,6 +272,34 @@ TEST(BN, ExtendedEuclidean)
     EXPECT_TRUE(d == 1);
     EXPECT_TRUE(x == 1);
     EXPECT_TRUE(y == -1);
+}
+
+TEST(BN, JacobiSymbol)
+{
+    // (1001, 9907) = -1
+    BN k(1001);
+    BN n(9907);
+    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
+
+    // (19, 45) = 1
+    k = BN(19);
+    n = BN(45);
+    EXPECT_TRUE(BN::JacobiSymbol(k, n) == 1);
+
+    // (8, 21) = -1
+    k = BN(8);
+    n = BN(21);
+    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
+
+    // (5, 21) = 1
+    k = BN(5);
+    n = BN(21);
+    EXPECT_TRUE(BN::JacobiSymbol(k, n) == 1);
+
+    // (12345, 3371) = -1
+    k = BN(12345);
+    n = BN(3371);
+    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
 }
 
 int main(int argc, char **argv) {

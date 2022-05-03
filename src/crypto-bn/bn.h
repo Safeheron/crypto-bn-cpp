@@ -376,6 +376,16 @@ public:
     static void ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d);
 
     /**
+     * Compute jacobi symbol (n, k)
+     *
+     * Refer to the page: https://en.wikipedia.org/wiki/Jacobi_symbol
+     * @param n
+     * @param k
+     * @return
+     */
+    static int JacobiSymbol(const BN &k, const BN &n);
+
+    /**
      * Return BIGNUM pointer of bn_
      */
     const bignum_st* GetBIGNUM() const;
