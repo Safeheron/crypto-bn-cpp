@@ -18,7 +18,8 @@ git clone https://github.com/safeheron/crypto-bn-cpp.git
 cd crypto-bn-cpp
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
-cmake ..
+# Turn on the switcher to enable tests; by default, turn off it if you don't wanna to build the test cases.
+cmake .. -DENABLE_TESTS=ON
 make
 make test
 sudo make install
