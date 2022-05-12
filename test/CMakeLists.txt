@@ -3,10 +3,19 @@ find_package(GTest REQUIRED)
 include_directories("../src"
                     ${GTEST_INCLUDE_DIRS})
 
-link_libraries(CryptoBN
-               ${GTEST_BOTH_LIBRARIES}
-               ${PROTOBUF_LIBRARY_DIRS}
-               pthread )
+option(ENABLE_ASSEMBLE "Enable assemble" OFF)
+if (NOT ${ENABLE_ASSEMBLE})
+    link_libraries(CryptoBN
+            ${GTEST_BOTH_LIBRARIES}
+            ${PROTOBUF_LIBRARY_DIRS}
+            pthread )
+else()
+    link_libraries(${CMAKE_PROJECT_NAME}
+            ${GTEST_BOTH_LIBRARIES}
+            ${PROTOBUF_LIBRARY_DIRS}
+            pthread )
+endif()
+
 
 add_executable(bn-arithmetic-operation-test bn-arithmetic-operation-test.cpp)
 add_test(NAME bn-arithmetic-operation-test COMMAND bn-arithmetic-operation-test)
