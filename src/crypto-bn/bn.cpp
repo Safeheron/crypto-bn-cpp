@@ -945,7 +945,7 @@ BN BN::FromBytesBE(const uint8_t *buf, int len)
 /**
  * Construct a BN object from byte string, in big endian
 */
-BN BN::FromBytesBE(std::string &buf)
+BN BN::FromBytesBE(const std::string &buf)
 {
     return FromBytesBE((const uint8_t *)buf.c_str(), buf.length());
 }
@@ -965,7 +965,7 @@ BN BN::FromBytesLE(const uint8_t *buf, int len)
 /**
  * Construct a BN object from byte string, in little endian
 */
-BN BN::FromBytesLE(std::string &buf)
+BN BN::FromBytesLE(const std::string &buf)
 {
     return FromBytesLE((const uint8_t *)buf.c_str(), buf.length());
 }

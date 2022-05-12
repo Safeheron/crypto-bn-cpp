@@ -270,7 +270,7 @@ public:
     /**
      * Construct a BN object from byte string, in big endian
     */
-    static BN FromBytesBE(std::string &buf);
+    static BN FromBytesBE(const std::string &buf);
     /**
      * Construct a BN object from byte buffer, in little endian
     */
@@ -278,7 +278,7 @@ public:
     /**
      * Construct a BN object from byte string, in little endian
     */
-    static BN FromBytesLE(std::string &buf);
+    static BN FromBytesLE(const std::string &buf);
     /**
      * Convert this BN to bytes string, in big endian
     */
