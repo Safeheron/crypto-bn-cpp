@@ -1131,7 +1131,7 @@ void BN::Hold(bignum_st* bn)
 /**
  * Return bits size of this BN
 */
-int BN::BitLength() const
+size_t BN::BitLength() const
 {
     return BN_num_bits(bn_);
 }

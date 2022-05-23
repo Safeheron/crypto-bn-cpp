@@ -10,15 +10,76 @@
 namespace safeheron {
 namespace rand {
 
+/**
+ * Sample random bytes.
+ * @param buf
+ * @param size
+ * @return true if successful, false otherwise.
+ */
 bool RandomBytes(unsigned char * buf, size_t size);
+
+/**
+ * Sample random BN.
+ * @param byteSize length by byte.
+ * @return a random BN.
+ */
 safeheron::bignum::BN RandomBN(size_t byteSize);
+
+/**
+ * Sample random BN whose highest bit is 1.
+ * @param byteSize length by byte.
+ * @return a random BN.
+ */
 safeheron::bignum::BN RandomBNStrict(size_t byteSize);
+
+/**
+ * Sample random prime.
+ * @param byteSize length by byte.
+ * @return a random BN.
+ */
 safeheron::bignum::BN RandomPrime(size_t byteSize);
+
+/**
+ * Sample random prime whose highest bit is 1.
+ * @param byteSize length by byte.
+ * @return a random prime.
+ */
 safeheron::bignum::BN RandomPrimeStrict(size_t byteSize);
+
+/**
+ * Sample random safe prime.
+ * @param byteSize length by byte.
+ * @return a random safe prime.
+ */
 safeheron::bignum::BN RandomSafePrime(size_t byteSize);
+
+/**
+ * Sample random safe prime whose highest bit is 1.
+ * @param byteSize length by byte.
+ * @return a random safe prime.
+ */
+safeheron::bignum::BN RandomSafePrimeStrict(size_t byteSize);
+
+/**
+ * Sample random BN which is less than "max".
+ * @param max
+ * @return a random BN.
+ */
 safeheron::bignum::BN RandomBNLt(const safeheron::bignum::BN &max);
-// Deprecated
+
+/**
+ * Sample random BN which is less than and co-prime to "max"
+ * @deprecated Use "RandomBNLtCoPrime" instead.
+ * @param max
+ * @return a random BN
+ */
 safeheron::bignum::BN RandomBNLtGcd(const safeheron::bignum::BN &max);
+
+/**
+ * Sample random BN which is less than and co-prime to "max"
+ * @param max
+ * @return a random BN
+ */
 safeheron::bignum::BN RandomBNLtCoPrime(const safeheron::bignum::BN &max);
 
 };

@@ -138,6 +138,10 @@ TEST(Rand, SafePrimes)
     std::string str;
     p.ToHexStr(str);
     std::cout << "safe primes.p: " << str << std::endl;
+
+    p = safeheron::rand::RandomSafePrimeStrict(key_bit/(2 * 8));
+    p.ToHexStr(str);
+    std::cout << "safe primes[strict length].p: " << str << std::endl;
 }
 
 

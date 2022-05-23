@@ -91,6 +91,14 @@ BN RandomSafePrime(size_t byteSize) {
     return n;
 }
 
+BN RandomSafePrimeStrict(size_t byteSize) {
+    BN n;
+    do {
+        n = RandomSafePrime(byteSize);
+    }while (!n.IsBitSet(8*byteSize-1));
+    return n;
+}
+
 BN RandomBNLt(const BN &max) {
     BN n;
     int byteLen = max.ByteLength();
