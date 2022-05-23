@@ -85,9 +85,11 @@ BN::BN()
     // BN_zero() never fails and returns no value.
     BN_zero(bn_);
 }
+
 /**
- * Construct a BN object and initialized it with parameter i
-*/
+ * Construct a BN object and initialized it with word i
+ * @param[in] i
+ */
 BN::BN(long i)
         : bn_(nullptr)
 {
@@ -111,13 +113,12 @@ BN::BN(long i)
         BN_set_negative(bn_, 1);
     }
 }
+
 /**
  * Construct a BN objet and initialized it with str
- *
- * str: a 2/10/16 radix number string
- * base: the radix, only support 2/10/16 radix
- *
-*/
+ * @param[in] str A pointer to a 2/10/16 radix number string.
+ * @param[in] base the radix, only support 2/10/16 radix
+ */
 BN::BN(const char *str, int base)
         : bn_(nullptr)
 {
@@ -164,6 +165,7 @@ BN::BN(const char *str, int base)
             break;
     }
 }
+
 /**
  * Destruction
 */
@@ -174,9 +176,10 @@ BN::~BN()
         bn_ = nullptr;
     }
 }
+
 /**
  * A copy constructor
- * Dump the BN object from num
+ * @param[in] num
 */
 BN::BN(const BN &num)
         : bn_(nullptr)
@@ -185,10 +188,12 @@ BN::BN(const BN &num)
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
     }
 }
+
 /**
- * A copy assignment
- * Return a copy BN object from num
-*/
+ * A copy assignment operator
+ * @param[in] num
+ * @return Return a copy BN object from num
+ */
 BN &BN::operator=(const BN &num)
 {
     assert(bn_);
@@ -200,20 +205,23 @@ BN &BN::operator=(const BN &num)
     }
     return *this;
 }
+
 /**
  * A move constructor
- * move BN object pointer from num to this
-*/
+ * @param[in] num
+ */
 BN::BN(BN &&num) noexcept
         : bn_(nullptr)
 {
     bn_ = num.bn_;
     num.bn_ = nullptr;
 }
+
 /**
- * A move assignment
- * move BN object pointer from num to this, and return it
-*/
+ * A move assignment operator
+ * @param[in] num
+ * @return A BN object moved from num.
+ */
 BN &BN::operator=(BN &&num) noexcept
 {
     if (this == &num) {
@@ -227,9 +235,12 @@ BN &BN::operator=(BN &&num) noexcept
     num.bn_ = nullptr;
     return *this;
 }
+
 /**
- * Add the BN num with this, and return the result
-*/
+ * Addition of BNs.
+ * @param[in] num
+ * @return (*this) + num
+ */
 BN BN::operator+(const BN &num) const
 {
     BN n;
@@ -240,9 +251,12 @@ BN BN::operator+(const BN &num) const
     }
     return n;
 }
+
 /**
- * Sub the BN num from this, and return the result
-*/
+ * Subtraction of BNs.
+ * @param[in] num
+ * @return (*this) - num
+ */
 BN BN::operator-(const BN &num) const
 {
     BN n;
@@ -253,9 +267,12 @@ BN BN::operator-(const BN &num) const
     }
     return n;
 }
+
 /**
- * Mul the BN num with this, and return the result
-*/
+ * Multiplication of BNs.
+ * @param[in] num
+ * @return (*this) * num
+ */
 BN BN::operator*(const BN &num) const
 {
     BN n;
@@ -276,9 +293,12 @@ BN BN::operator*(const BN &num) const
     ctx = nullptr;
     return n;
 }
+
 /**
- * Div the BN num with this, and return the result
-*/
+ * Division of BNs.
+ * @param[in] num
+ * @return (*this) / num
+ */
 BN BN::operator/(const BN &num) const
 {
     BN n;
@@ -299,9 +319,12 @@ BN BN::operator/(const BN &num) const
     ctx = nullptr;
     return n;
 }
+
 /**
- * Add the BN num with this
-*/
+ * Self-addition of BNs.
+ * @param[in] num
+ * @return (*this) + num
+ */
 BN &BN::operator+=(const BN &num)
 {
     int ret = 0;
@@ -311,9 +334,12 @@ BN &BN::operator+=(const BN &num)
     }
     return *this;
 }
+
 /**
- * Sub the BN num from this
-*/
+ * Self-subtraction of BNs.
+ * @param[in] num
+ * @return (*this) - num
+ */
 BN &BN::operator-=(const BN &num)
 {
     int ret = 0;
@@ -323,9 +349,12 @@ BN &BN::operator-=(const BN &num)
     }
     return *this;
 }
+
 /**
- * Mul the BN num with this
-*/
+ * Self-multiplication of BNs.
+ * @param[in] num
+ * @return (*this) * num
+ */
 BN &BN::operator*=(const BN &num)
 {
     int ret = 0;
@@ -345,9 +374,12 @@ BN &BN::operator*=(const BN &num)
     ctx = nullptr;
     return *this;
 }
+
 /**
- * Div the BN num by this
-*/
+ * Self-division of BNs.
+ * @param[in] num
+ * @return (*this) / num
+ */
 BN &BN::operator/=(const BN &num)
 {
     int ret = 0;
@@ -367,9 +399,12 @@ BN &BN::operator/=(const BN &num)
     ctx = nullptr;
     return *this;
 }
+
 /**
- * Add the long value si with this, and return the result
-*/
+ * Addition with a long int.
+ * @param[in] num
+ * @return (*this) + n
+ */
 BN BN::operator+(long si) const
 {
     int ret = 0;
@@ -388,9 +423,12 @@ BN BN::operator+(long si) const
     }
     return n;
 }
+
 /**
- * Sub the long value si from this, and return the result
-*/
+ * Subtraction with a long int.
+ * @param[in] num
+ * @return (*this) - n
+ */
 BN BN::operator-(long si) const
 {
     int ret = 0;
@@ -409,9 +447,12 @@ BN BN::operator-(long si) const
     }
     return n;
 }
+
 /**
- * Mul the long value si with this, and return the result
-*/
+ * Multiplication with a long int.
+ * @param[in] num
+ * @return (*this) * n
+ */
 BN BN::operator*(long si) const
 {
     int ret = 0;
@@ -432,9 +473,12 @@ BN BN::operator*(long si) const
     }
     return n;
 }
+
 /**
- * Div the long value si with this, and return the result
-*/
+ * Self-division with a long int.
+ * @param[in] num
+ * @return (*this) / n
+ */
 BN BN::operator/(long si) const
 {
     BN n(*this);
@@ -454,9 +498,12 @@ BN BN::operator/(long si) const
     }
     return n;
 }
+
 /**
- * Add the long value si with this
-*/
+ * Self-addition with a long int.
+ * @param[in] num
+ * @return (*this) + n
+ */
 BN &BN::operator+=(long si)
 {
     int ret = 0;
@@ -473,9 +520,12 @@ BN &BN::operator+=(long si)
     }
     return *this;
 }
+
 /**
- * Sub the long value si from this
-*/
+ * Self-subtraction with a long int.
+ * @param[in] num
+ * @return (*this) - n
+ */
 BN &BN::operator-=(long si)
 {
     int ret = 0;
@@ -492,9 +542,12 @@ BN &BN::operator-=(long si)
     }
     return *this;
 }
+
 /**
- * Mul the long value si with this
-*/
+ * Self-multiplication with a long int.
+ * @param[in] num
+ * @return (*this) * n
+ */
 BN &BN::operator*=(long si)
 {
     int ret = 0;
@@ -513,9 +566,12 @@ BN &BN::operator*=(long si)
     }
     return *this;
 }
+
 /**
- * Div the long value si with this
-*/
+ * Self-division with a long int.
+ * @param[in] num
+ * @return (*this) / n
+ */
 BN &BN::operator/=(long si)
 {
     unsigned long ret = 0;
@@ -533,9 +589,12 @@ BN &BN::operator/=(long si)
     }
     return *this;
 }
+
 /**
- * Mod the BN num with this, and return the result
-*/
+ * Modulo operation.
+ * @param[in] num
+ * @return (*this) mod num
+ */
 BN BN::operator%(const BN &num) const
 {
     int ret = 0;
@@ -556,16 +615,22 @@ BN BN::operator%(const BN &num) const
     ctx = nullptr;
     return n;
 }
+
 /**
- * Mod the ULONG value ui with this, and return the result
-*/
+ * Modulo operation with a unsigned long int.
+ * @param[in] num
+ * @return (*this) mod num
+ */
 BN BN::operator%(unsigned long ui) const
 {
     return *this % BN(ui);
 }
+
 /**
- * Shift this to left by ui bits, and return the result
-*/
+ * Bitwise left shift.
+ * @param[in] n
+ * @return (*this) << n, that is left shift of (*this) by n bits.
+ */
 BN BN::operator<<(unsigned long ui) const
 {
     BN n;
@@ -576,9 +641,12 @@ BN BN::operator<<(unsigned long ui) const
     }
     return n;
 }
+
 /**
- * Shift this to right by ui bits, and return the result
-*/
+ * Bitwise right shift.
+ * @param[in] n
+ * @return (*this) >> n, that is right shift of (*this) by n bits.
+ */
 BN BN::operator>>(unsigned long ui) const
 {
     BN n;
@@ -589,9 +657,12 @@ BN BN::operator>>(unsigned long ui) const
     }
     return n;
 }
+
 /**
- * Shift this to left by ui bits
-*/
+ * Bitwise left shift(self assignment).
+ * @param[in] n
+ * @return (*this) << n, that is left shift of (*this) by n bits.
+ */
 BN &BN::operator<<=(unsigned long ui)
 {
     int ret = 0;
@@ -601,9 +672,12 @@ BN &BN::operator<<=(unsigned long ui)
     }
     return *this;
 }
+
 /**
- * Shift this to right by ui bits
-*/
+ * Bitwise right shift(self assignment).
+ * @param[in] n
+ * @return (*this) >> n, that is right shift of (*this) by n bits.
+ */
 BN &BN::operator>>=(unsigned long ui)
 {
     int ret = 0;
@@ -613,98 +687,135 @@ BN &BN::operator>>=(unsigned long ui)
     }
     return *this;
 }
+
 /**
- * Return true if this.bn_ = num.bn_
-*/
+ * Comparison operator: equal to
+ * @param[in] num
+ * @return true if (*this) is equal to num, false otherwise.
+ */
 bool BN::operator==(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) == 0;
 }
+
 /**
- * Return true if this.bn_ != num.bn_
-*/
+ * Comparison operator: not equal to
+ * @param[in] num
+ * @return true if (*this) is not equal to num, false otherwise.
+ */
 bool BN::operator!=(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) != 0;
 }
+
 /**
- * Return true if this.bn_ < num.bn_
-*/
+ * Comparison operator: less than
+ * @param[in] num
+ * @return true if (*this) is less than num, false otherwise.
+ */
 bool BN::operator<(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) == -1;
 }
+
 /**
- * Return true if this.bn_ <= num.bn_
-*/
+ * Comparison operator: less than or equal to
+ * @param[in] num
+ * @return true if (*this) is less than or equal to num, false otherwise.
+ */
 bool BN::operator<=(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) <= 0;
 }
+
 /**
- * Return true if this.bn_ > num.bn_
-*/
+ * Comparison operator: greater than
+ * @param[in] num
+ * @return true if (*this) is greater than num, false otherwise.
+ */
 bool BN::operator>(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) == 1;
 }
+
 /**
- * Return true if this.bn_ >= num.bn_
-*/
+ * Comparison operator: greater than or equal to
+ * @param[in] num
+ * @return true if (*this) is greater than or equal to num, false otherwise.
+ */
 bool BN::operator>=(const BN &num) const
 {
     return BN_cmp(bn_, num.bn_) >= 0;
 }
+
 /**
- * Return true if this.bn_ = si
-*/
+ * Comparison operator: equal to
+ * @param[in] si
+ * @return true if (*this) is equal to si, false otherwise.
+ */
 bool BN::operator==(long si) const
 {
     BN n(si);
     return *this == n;
 }
+
 /**
- * Return true if this.bn_ != si
-*/
+ * Comparison operator: not equal to
+ * @param[in] si
+ * @return true if (*this) is not equal to si, false otherwise.
+ */
 bool BN::operator!=(long si) const
 {
     BN n(si);
     return *this != n;
 }
+
 /**
- * Return true if this.bn_ > si
-*/
+ * Comparison operator: greater than
+ * @param[in] si
+ * @return true if (*this) is greater than si, false otherwise.
+ */
 bool BN::operator>(long si) const
 {
     BN n(si);
     return *this > n;
 }
+
 /**
- * Return true if this.bn_ < si
-*/
+ * Comparison operator: less than
+ * @param[in] si
+ * @return true if (*this) is less than si, false otherwise.
+ */
 bool BN::operator<(long si) const
 {
     BN n(si);
     return *this < n;
 }
+
 /**
- * Return true if this.bn_ >= si
-*/
+ * Comparison operator: greater than or equal to
+ * @param[in] si
+ * @return true if (*this) is greater than or equal to si, false otherwise.
+ */
 bool BN::operator>=(long si) const
 {
     BN n(si);
     return *this >= n;
 }
+
 /**
- * Return true if this.bn_ <= si
-*/
+ * Comparison operator: less than or equal to
+ * @param[in] si
+ * @return true if (*this) is less than or equal to si, false otherwise.
+ */
 bool BN::operator<=(long si) const
 {
     BN n(si);
     return *this <= n;
 }
+
 /**
- * Return the negative of this
+ * Return the negative of this BN
 */
 BN BN::Neg() const
 {
@@ -717,10 +828,13 @@ BN BN::Neg() const
     }
     return n;
 }
+
 /**
- *  Return quotient q = this / d
- *  and remainder r = this % d
-*/
+ * Division of BNs: *this = q * d + r.
+ * @param[in] d divider
+ * @param[out] q quotient
+ * @param[out] r remainder
+ */
 void BN::Div(const BN &d, BN &q, BN &r)
 {
     int ret = 0;
@@ -736,10 +850,13 @@ void BN::Div(const BN &d, BN &q, BN &r)
     BN_CTX_free(ctx);
     ctx = nullptr;
 }
+
 /**
- *  Return the inverse of (this modulo m)
- *  Compute the inverse modulo mod. Be careful, mode must be prime!!!
-*/
+ * Calculate the inverse modulo m.
+ * @param[in] m
+ * @warning (*this) and m must be co-prime. It's all safe if m is a prime.
+ * @return the inverse modulo m
+ */
 BN BN::InvM(const BN &m) const
 {
     BN r;
@@ -756,9 +873,12 @@ BN BN::InvM(const BN &m) const
     ctx = nullptr;
     return r;
 }
+
 /**
- * Return the greatest common divisor of this and n
-*/
+ * Calculate the greatest common divisor of (*this) and n
+ * @param[in] n
+ * @return the greatest common divisor
+ */
 BN BN::Gcd(const BN &n) const
 {
     BN r;
@@ -776,20 +896,27 @@ BN BN::Gcd(const BN &n) const
     ctx = nullptr;
     return r;
 }
+
 /**
- * Return the least common multiple of this and n.
- * lcm(a, b) = ab/gcd(a,b))
-*/
+ * Calculate the least common multiple of this and n.
+ *      lcm(a, b) = ab/gcd(a,b))
+ * @param[in] n
+ * @return the least common multiple
+ */
 BN BN::Lcm(const BN &n) const
 {
     BN r = (*this) * n;
     r /= Gcd(n);
     return r;
 }
+
 /**
- * Return the y-th power of this and modulo m
- * r = (this ^ y) % m
-*/
+ * Calculate the y-th power of this and modulo m
+ *      r = (this ^ y) % m
+ * @param[in] y
+ * @param[in] m
+ * @return the y-th power
+ */
 BN BN::PowM(const BN &y, const BN &m) const
 {
     BN r;
@@ -809,10 +936,20 @@ BN BN::PowM(const BN &y, const BN &m) const
     ctx = nullptr;
     return y.IsNeg()? r.InvM(m): r;
 }
+
 /**
- * Return 'r' such that
+ * Calculate square root 'r' on modulo m where
  *      r^2 == this (mod p),
-*/
+ *
+ * @warning You must check if a square root exists before invoking the function.
+ *  \code{.cpp}
+ *       if(!a.ExistSqrtM(p)) return false;
+ *       BN root = a.SqrtM(p);
+ *  \endcode
+ *
+ * @param[in] m
+ * @return the square rootn
+ */
 BN BN::SqrtM(const BN &p) const
 {
     BN r;
@@ -829,9 +966,13 @@ BN BN::SqrtM(const BN &p) const
     ctx = nullptr;
     return r;
 }
+
 /**
- * Return sqrt mod is exist or not
-*/
+ * Check if a square root 'r' exists where
+ *      r^2 == this (mod p),
+ * @param[in] m
+ * @return true if 'r' exists, false otherwise.
+ */
 bool BN::ExistSqrtM(const BN &p) const
 {
     BN p_minus_1 = p - 1;
@@ -844,16 +985,21 @@ bool BN::ExistSqrtM(const BN &p) const
         return false;
     }
 }
+
 /**
  * Return true is this is a prime, otherwise return false
-*/
+ * @return true if this is probably prime, false otherwise.
+ */
 bool BN::IsProbablyPrime() const
 {
     return BN_is_prime_fasttest_ex(bn_, 0, nullptr, 1, nullptr);
 }
+
 /**
- * Construct a BN object from HEX char*
-*/
+ * Conversion from hex string to BN.
+ * @param[in] str
+ * @return a BN object.
+ */
 BN BN::FromHexStr(const char *str)
 {
     assert(str);
@@ -869,16 +1015,22 @@ BN BN::FromHexStr(const char *str)
     }
     return n;
 }
+
 /**
- * Construct a BN object from HEX string
-*/
+ * Conversion from HEX string to BN
+ * @param[in] str
+ * @return a BN object.
+ */
 BN BN::FromHexStr(const std::string &str)
 {
     return BN::FromHexStr(str.c_str());
 }
+
 /**
- * Construct a BN object from DEC char*
-*/
+ * Conversion from decimal string to BN.
+ * @param[in] str
+ * @return a BN object.
+ */
 BN BN::FromDecStr(const char *str)
 {
     assert(str);
@@ -894,16 +1046,21 @@ BN BN::FromDecStr(const char *str)
     }
     return n;
 }
+
 /**
- * Construct a BN object from DEC string
-*/
+ * Conversion from decimal string to BN
+ * @param[in] str
+ * @return a BN object.
+ */
 BN BN::FromDecStr(const std::string &str)
 {
     return BN::FromDecStr(str.c_str());
 }
+
 /**
- * Convert this BN bits to a HEX string
-*/
+ * Conversion from BN to HEX string
+ * @param[in] str
+ */
 void BN::ToHexStr(std::string &str) const
 {
     char *ch = BN_bn2hex((const BIGNUM*)bn_);
@@ -915,9 +1072,11 @@ void BN::ToHexStr(std::string &str) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Convert this BN bits to a DEC string
-*/
+ * Conversion from BN to HEX string
+ * @param[in] str
+ */
 void BN::ToDecStr(std::string &str) const
 {
     char *ch = BN_bn2dec((const BIGNUM*)bn_);
@@ -929,9 +1088,13 @@ void BN::ToDecStr(std::string &str) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Construct a BN object from byte buffer, in big endian
-*/
+ * Conversion from a byte buffer to a BN object in big endian
+ * @param[in] buf
+ * @param[in] len
+ * @return a BN object
+ */
 BN BN::FromBytesBE(const uint8_t *buf, int len)
 {
     assert(buf);
@@ -942,16 +1105,23 @@ BN BN::FromBytesBE(const uint8_t *buf, int len)
     }
     return n;
 }
+
 /**
- * Construct a BN object from byte string, in big endian
-*/
+ * Conversion from a byte buffer to a BN object in big endian
+ * @param[in] buf
+ * @return a BN object
+ */
 BN BN::FromBytesBE(const std::string &buf)
 {
     return FromBytesBE((const uint8_t *)buf.c_str(), buf.length());
 }
+
 /**
- * Construct a BN object from byte buffer, in little endian
-*/
+ * Conversion from a byte buffer to a BN object in little endian
+ * @param[in] buf
+ * @param[in] len
+ * @return a BN object
+ */
 BN BN::FromBytesLE(const uint8_t *buf, int len)
 {
     assert(buf);
@@ -962,16 +1132,21 @@ BN BN::FromBytesLE(const uint8_t *buf, int len)
     }
     return n;
 }
+
 /**
- * Construct a BN object from byte string, in little endian
-*/
+ * Conversion from a byte buffer to a BN object in little endian
+ * @param[in] buf
+ * @return a BN object
+ */
 BN BN::FromBytesLE(const std::string &buf)
 {
     return FromBytesLE((const uint8_t *)buf.c_str(), buf.length());
 }
+
 /**
- * Convert this BN to bytes string, in big endian
-*/
+ * Conversion to bytes string in big endian
+ * @param[in] buf
+ */
 void BN::ToBytesBE(std::string &buf) const
 {
     int len = BN_num_bytes(bn_);
@@ -996,9 +1171,11 @@ void BN::ToBytesBE(std::string &buf) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Convert this BN to bytes string, in little endian
-*/
+ * Conversion to bytes string in little endian
+ * @param[in] buf
+ */
 void BN::ToBytesLE(std::string &buf) const
 {
     int len = BN_num_bytes(bn_);
@@ -1023,9 +1200,12 @@ void BN::ToBytesLE(std::string &buf) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Convert this BN to 32 bytes buff, in big endian
-*/
+ * Conversion to bytes string in big endian, which is 32 in length by byte
+ * @param[in] buf32
+ * @param[in] blen
+ */
 void BN::ToBytes32BE(uint8_t *buf32, int blen) const
 {
     assert(buf32);
@@ -1060,9 +1240,12 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Convert this BN to 32 bytes buff, in little endian
-*/
+ * Conversion to bytes string in little endian, which is 32 in length by byte
+ * @param[in] buf32
+ * @param[in] blen
+ */
 void BN::ToBytes32LE(uint8_t *buf32, int blen) const
 {
     assert(buf32);
@@ -1096,29 +1279,34 @@ void BN::ToBytes32LE(uint8_t *buf32, int blen) const
     OPENSSL_free(ch);
     ch = nullptr;
 }
+
 /**
- * Convert this BN to 32 bytes string, in big endian
-*/
+ * Conversion to bytes string in big endian, which is 32 in length by byte
+ * @param[in] buf
+ */
 void BN::ToBytes32BE(std::string &buf) const
 {
     uint8_t t_buf32[32] = {0};
     ToBytes32BE(t_buf32);
     buf.assign((const char *)t_buf32, 32);
 }
+
 /**
- * Convert this BN to 32 bytes string, in little endian
-*/
+ * Conversion to bytes string in little endian, which is 32 in length by byte
+ * @param[in] buf
+ */
 void BN::ToBytes32LE(std::string &buf) const
 {
     uint8_t t_buf32[32];
     ToBytes32LE(t_buf32);
     buf.assign((const char *)t_buf32, 32);
 }
+
 /**
- * Hold no a new BN object specified by bn
- * bn should be new and initialized before calling this API，
- * and don't free it by hand, it will be freed auto in distruction
-*/
+ * Hold no a new BN object specified by "bn", which is a pointer to a memory in struct "bignum_st".
+ * @warning "bn" must be created by the key word "new" and initialized before calling this API. It will be freed automatically in the destructor.
+ * @param[in] bn
+ */
 void BN::Hold(bignum_st* bn)
 {
     assert(bn);
@@ -1128,74 +1316,99 @@ void BN::Hold(bignum_st* bn)
     }
     bn_ = bn;
 }
+
 /**
  * Return bits size of this BN
-*/
+ * @return bit size
+ */
 size_t BN::BitLength() const
 {
     return BN_num_bits(bn_);
 }
+
 /**
  * Return bytes size of this BN
-*/
+ * @return bytes size.
+ */
 int BN::ByteLength() const
 {
     int bitLen = BitLength();
     return (bitLen % 8 == 0) ? (bitLen / 8) : (1 + bitLen / 8);
 }
+
 /**
- * Return true if this BIGUN is a negative number
-*/
+ * Check if this BN is a negative number.
+ * @return true if this BIGUN is a negative number, false otherwise.
+ */
 int BN::IsNeg() const
 {
     return BN_is_negative(bn_) == 1;
 }
+
 /**
- * Return true if this BIGUN is a even number
-*/
+ * Check if this BN is even.
+ * @return true if this BN is even, false otherwise.
+ */
 int BN::IsEven() const
 {
     return !IsOdd();
 }
+
 /**
- * Return true if this BIGUN is an odd number
-*/
+ * Check if this BN is odd.
+ * @return true if this BN is odd, false otherwise.
+ */
 int BN::IsOdd() const
 {
     return BN_is_odd(bn_) == 1;
 }
+
 /**
- * Return true if this BIGUN is 0
-*/
+ * Check if this BN is equal to zero.
+ * @return true if this BN is equal to zero, false otherwise.
+ */
 int BN::IsZero() const
 {
     return BN_is_zero(bn_) == 1;
 }
+
 /**
  * Return the max one between a and b
-*/
+ * @param[in] a
+ * @param[in] b
+ * @return  max(a, b)
+ */
 BN BN::Max(const BN &a, const BN &b)
 {
     return (a > b) ? a : b;
 }
+
 /**
  * Return the min one between a and b
-*/
+ * @param[in] a
+ * @param[in] b
+ * @return min(a, b)
+ */
 BN BN::Min(const BN &a, const BN &b)
 {
     return (a < b) ? a : b;
 }
+
 /**
  * Swap the values between a and b
-*/
+ * @param[in] a
+ * @param[in] b
+ */
 void BN::Swap(BN &a, BN &b)
 {
     assert(a.bn_ && b.bn_);
     BN_swap(a.bn_, b.bn_);
 }
+
 /**
- * Set bits for this BN
-*/
+ * Set the bit in position "index".
+ * @param[in] index the index of the bit
+ */
 void BN::SetBit(unsigned long bit_index)
 {
     assert(bn_);
@@ -1205,9 +1418,11 @@ void BN::SetBit(unsigned long bit_index)
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
     }
 }
+
 /**
- * Clean bits for this BN
-*/
+ * Clear the bit in position "index".
+ * @param[in] index the index of the bit
+ */
 void BN::ClearBit(unsigned long bit_index)
 {
     assert(bn_);
@@ -1217,17 +1432,23 @@ void BN::ClearBit(unsigned long bit_index)
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
     }
 }
+
 /**
- * Return true if this BN bit is set
-*/
+ * Check if the bit was set in position "index"
+ * @param[in] index
+ * @return true if the bit was set, false otherwise.
+ */
 bool BN::IsBitSet(unsigned long bit_index) const
 {
     assert(bn_);
     return BN_is_bit_set(bn_, bit_index) == 1;
 }
+
 /**
- * Return the string of this BN
-*/
+ * Inspect the value.
+ * @param[in] radix 10 or 16 radix number
+ * @return A string which indicate this BN to the specified radix.
+ */
 std::string BN::Inspect(int base) const
 {
     assert(base == 10 || base == 16);
@@ -1243,30 +1464,38 @@ std::string BN::Inspect(int base) const
 }
 
 /**
- * Extended Euclidean algorithm:
- *     - Given a, b
- *     - Compute x, y, d, so that  ax + by = d
+ * Extended Euclidean algorithm
+ *      ax + by = d
  *
- * def ext_euclid(a, b):
-    old_s, s = 1, 0
-    old_t, t = 0, 1
-    old_r, r = a, b
-    if b == 0:
-        return 1, 0, a
-    else:
-        while(r!=0):
-            q = old_r // r
-            old_r, r = r, old_r-q*r
-            old_s, s = s, old_s-q*s
-            old_t, t = t, old_t-q*t
-    return old_s, old_t, old_r
- * @param a
- * @param b
- * @param d
- * @param x
- * @param y
+ * @param[in] a
+ * @param[in] b
+ * @param[out] d greatest common divider of a and b.
+ * @param[out] x
+ * @param[out] y
  */
 void BN::ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d){
+    /**
+     * @note
+     * Extended Euclidean algorithm: \p
+     *     - Given a, b              \p
+     *     - Compute x, y, d, so that  ax + by = d
+     *
+     * \code{.cpp}
+     * def ext_euclid(a, b):
+     *  old_s, s = 1, 0
+     *  old_t, t = 0, 1
+     *  old_r, r = a, b
+     *  if b == 0:
+     *      return 1, 0, a
+     *  else:
+     *      while(r!=0):
+     *          q = old_r // r
+     *          old_r, r = r, old_r-q*r
+     *          old_s, s = s, old_s-q*s
+     *          old_t, t = t, old_t-q*t
+     *  return old_s, old_t, old_r
+     *  \endcode
+     */
     bool is_a_neg = false;
     bool is_b_neg = false;
     BN t_a = a;
@@ -1324,7 +1553,7 @@ void BN::ExtendedEuclidean(const BN& a, const BN &b, BN &x, BN &y, BN &d){
  *     5. Otherwise, the "numerator" and "denominator" are now odd positive coprime integers, so we can flip the symbol using rule 6, then return to step 1.
  * @param k
  * @param n
- * @return
+ * @return jacobi(n, k)
  */
 int BN::JacobiSymbol(const BN &_k, const BN &_n){
     int symbol = 1;
@@ -1366,7 +1595,7 @@ int BN::JacobiSymbol(const BN &_k, const BN &_n){
 }
 
 /**
- * Return BIGNUM pointer of bn_
+ * Return the pointer to the internal struct.
  */
 const bignum_st* BN::GetBIGNUM() const
 {

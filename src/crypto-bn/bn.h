@@ -61,7 +61,7 @@ public:
 
     /**
      * A move assignment operator
-     * @param num
+     * @param[in] num
      * @return A BN object moved from num.
      */
     BN &operator=(BN &&num) noexcept;
@@ -73,238 +73,238 @@ public:
 
     /**
      * Addition of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) + num
      */
     BN operator+(const BN &num) const;
 
     /**
      * Subtraction of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) - num
      */
     BN operator-(const BN &num) const;
 
     /**
      * Multiplication of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) * num
      */
     BN operator*(const BN &num) const;
 
     /**
      * Division of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) / num
      */
     BN operator/(const BN &num) const;
 
     /**
      * Self-addition of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) + num
      */
     BN &operator+=(const BN &num);
 
     /**
      * Self-subtraction of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) - num
      */
     BN &operator-=(const BN &num);
 
     /**
      * Self-multiplication of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) * num
      */
     BN &operator*=(const BN &num);
 
     /**
      * Self-division of BNs.
-     * @param num
+     * @param[in] num
      * @return (*this) / num
      */
     BN &operator/=(const BN &num);
 
     /**
      * Addition with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) + n
      */
     BN operator+(long n) const;
 
     /**
      * Subtraction with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) - n
      */
     BN operator-(long n) const;
 
     /**
      * Multiplication with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) * n
      */
     BN operator*(long n) const;
 
     /**
      * Self-division with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) / n
      */
     BN operator/(long n) const;
 
     /**
      * Self-addition with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) + n
      */
     BN &operator+=(long n);
 
     /**
      * Self-subtraction with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) - n
      */
     BN &operator-=(long n);
 
     /**
      * Self-multiplication with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) * n
      */
     BN &operator*=(long n);
 
     /**
      * Self-division with a long int.
-     * @param num
+     * @param[in] num
      * @return (*this) / n
      */
     BN &operator/=(long n);
 
     /**
      * Modulo operation.
-     * @param num
+     * @param[in] num
      * @return (*this) mod num
      */
     BN operator%(const BN &num) const;
 
     /**
      * Modulo operation with a unsigned long int.
-     * @param num
+     * @param[in] num
      * @return (*this) mod num
      */
     BN operator%(unsigned long n) const;
 
     /**
      * Bitwise left shift.
-     * @param n
+     * @param[in] n
      * @return (*this) << n, that is left shift of (*this) by n bits.
      */
     BN operator<<(unsigned long n) const;
 
     /**
      * Bitwise right shift.
-     * @param n
-     * @return (*this) << n, that is right shift of (*this) by n bits.
+     * @param[in] n
+     * @return (*this) >> n, that is right shift of (*this) by n bits.
      */
     BN operator>>(unsigned long n) const;
 
     /**
      * Bitwise left shift(self assignment).
-     * @param n
+     * @param[in] n
      * @return (*this) << n, that is left shift of (*this) by n bits.
      */
     BN &operator<<=(unsigned long n);
 
     /**
      * Bitwise right shift(self assignment).
-     * @param n
-     * @return (*this) << n, that is right shift of (*this) by n bits.
+     * @param[in] n
+     * @return (*this) >> n, that is right shift of (*this) by n bits.
      */
     BN &operator>>=(unsigned long n);
 
     /**
      * Comparison operator: equal to
-     * @param num
+     * @param[in] num
      * @return true if (*this) is equal to num, false otherwise.
      */
     bool operator==(const BN &num) const;
 
     /**
      * Comparison operator: not equal to
-     * @param num
+     * @param[in] num
      * @return true if (*this) is not equal to num, false otherwise.
      */
     bool operator!=(const BN &num) const;
 
     /**
      * Comparison operator: greater than
-     * @param num
+     * @param[in] num
      * @return true if (*this) is greater than num, false otherwise.
      */
     bool operator>(const BN &num) const;
 
     /**
      * Comparison operator: less than
-     * @param num
+     * @param[in] num
      * @return true if (*this) is less than num, false otherwise.
      */
     bool operator<(const BN &num) const;
 
     /**
      * Comparison operator: greater than or equal to
-     * @param num
+     * @param[in] num
      * @return true if (*this) is greater than or equal to num, false otherwise.
      */
     bool operator>=(const BN &num) const;
 
     /**
      * Comparison operator: less than or equal to
-     * @param num
+     * @param[in] num
      * @return true if (*this) is less than or equal to num, false otherwise.
      */
     bool operator<=(const BN &num) const;
 
     /**
      * Comparison operator: equal to
-     * @param si
+     * @param[in] si
      * @return true if (*this) is equal to si, false otherwise.
      */
     bool operator==(long si) const;
 
     /**
      * Comparison operator: not equal to
-     * @param si
+     * @param[in] si
      * @return true if (*this) is not equal to si, false otherwise.
      */
     bool operator!=(long si) const;
 
     /**
      * Comparison operator: greater than
-     * @param si
+     * @param[in] si
      * @return true if (*this) is greater than si, false otherwise.
      */
     bool operator>(long si) const;
 
     /**
      * Comparison operator: less than
-     * @param si
+     * @param[in] si
      * @return true if (*this) is less than si, false otherwise.
      */
     bool operator<(long si) const;
 
     /**
      * Comparison operator: greater than or equal to
-     * @param si
+     * @param[in] si
      * @return true if (*this) is greater than or equal to si, false otherwise.
      */
     bool operator>=(long si) const;
 
     /**
      * Comparison operator: less than or equal to
-     * @param si
+     * @param[in] si
      * @return true if (*this) is less than or equal to si, false otherwise.
      */
     bool operator<=(long si) const;
@@ -315,9 +315,7 @@ public:
     BN Neg()const;
 
     /**
-     * Division of BNs.
-     *      q = (*this) / d
-     *      r = (*this) % d
+     * Division of BNs: *this = q * d + r.
      * @param[in] d divider
      * @param[out] q quotient
      * @param[out] r remainder
@@ -326,15 +324,15 @@ public:
 
     /**
      * Calculate the inverse modulo m.
-     * @param m
+     * @param[in] m
      * @warning (*this) and m must be co-prime. It's all safe if m is a prime.
-     * @return
+     * @return the inverse modulo m.
      */
     BN InvM(const BN &m) const;
 
     /**
      * Calculate the greatest common divisor of (*this) and n
-     * @param n
+     * @param[in] n
      * @return the greatest common divisor
      */
     BN Gcd(const BN &n) const;
@@ -342,7 +340,7 @@ public:
     /**
      * Calculate the least common multiple of this and n.
      *      lcm(a, b) = ab/gcd(a,b))
-     * @param n
+     * @param[in] n
      * @return the least common multiple
      */
     BN Lcm(const BN &n) const;
@@ -350,8 +348,8 @@ public:
     /**
      * Calculate the y-th power of this and modulo m
      *      r = (this ^ y) % m
-     * @param y
-     * @param m
+     * @param[in] y
+     * @param[in] m
      * @return the y-th power
      */
     BN PowM(const BN &y, const BN &m) const;
@@ -366,7 +364,7 @@ public:
      *       BN root = a.SqrtM(p);
      *  \endcode
      *
-     * @param m
+     * @param[in] m
      * @return the square rootn
      */
     BN SqrtM(const BN &m) const;
@@ -374,7 +372,7 @@ public:
     /**
      * Check if a square root 'r' exists where
      *      r^2 == this (mod p),
-     * @param m
+     * @param[in] m
      * @return true if 'r' exists, false otherwise.
      */
     bool ExistSqrtM(const BN &m) const;
@@ -387,116 +385,116 @@ public:
 
     /**
      * Conversion from hex string to BN.
-     * @param str
+     * @param[in] str
      * @return a BN object.
      */
     static BN FromHexStr(const char *str);
 
     /**
      * Conversion from HEX string to BN
-     * @param str
+     * @param[in] str
      * @return a BN object.
      */
     static BN FromHexStr(const std::string &str);
 
     /**
      * Conversion from decimal string to BN.
-     * @param str
+     * @param[in] str
      * @return a BN object.
      */
     static BN FromDecStr(const char *str);
 
     /**
      * Conversion from decimal string to BN
-     * @param str
+     * @param[in] str
      * @return a BN object.
      */
     static BN FromDecStr(const std::string &str);
 
     /**
      * Conversion from BN to HEX string
-     * @param str
+     * @param[in] str
      */
     void ToHexStr(std::string &str) const;
 
     /**
      * Conversion from BN to HEX string
-     * @param str
+     * @param[in] str
      */
     void ToDecStr(std::string &str) const;
 
     /**
      * Conversion from a byte buffer to a BN object in big endian
-     * @param buf
-     * @param len
+     * @param[in] buf
+     * @param[in] len
      * @return a BN object
      */
     static BN FromBytesBE(const uint8_t *buf, int len);
 
     /**
      * Conversion from a byte buffer to a BN object in big endian
-     * @param buf
+     * @param[in] buf
      * @return a BN object
      */
     static BN FromBytesBE(const std::string &buf);
 
     /**
      * Conversion from a byte buffer to a BN object in little endian
-     * @param buf
-     * @param len
+     * @param[in] buf
+     * @param[in] len
      * @return a BN object
      */
     static BN FromBytesLE(const uint8_t *buf, int len);
 
     /**
      * Conversion from a byte buffer to a BN object in little endian
-     * @param buf
+     * @param[in] buf
      * @return a BN object
      */
     static BN FromBytesLE(const std::string &buf);
 
     /**
      * Conversion to bytes string in big endian
-     * @param buf
+     * @param[in] buf
      */
     void ToBytesBE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in little endian
-     * @param buf
+     * @param[in] buf
      */
     void ToBytesLE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in big endian, which is 32 in length by byte
-     * @param buf
+     * @param[in] buf
      */
     void ToBytes32BE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in little endian, which is 32 in length by byte
-     * @param buf
+     * @param[in] buf
      */
     void ToBytes32LE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in big endian, which is 32 in length by byte
-     * @param buf32
-     * @param blen
+     * @param[in] buf32
+     * @param[in] blen
      */
     void ToBytes32BE(uint8_t *buf32, int blen=32) const;
 
     /**
      * Conversion to bytes string in little endian, which is 32 in length by byte
-     * @param buf32
-     * @param blen
+     * @param[in] buf32
+     * @param[in] blen
      */
     void ToBytes32LE(uint8_t *buf32, int blen=32) const;
 
     /**
      * Hold no a new BN object specified by "bn", which is a pointer to a memory in struct "bignum_st".
      * @warning "bn" must be created by the key word "new" and initialized before calling this API. It will be freed automatically in the destructor.
-     * @param bn
+     * @param[in] bn
      */
     void Hold(bignum_st* bn);
 
@@ -538,49 +536,49 @@ public:
 
     /**
      * Return the max one between a and b
-     * @param a
-     * @param b
+     * @param[in] a
+     * @param[in] b
      * @return  max(a, b)
      */
     static BN Max(const BN &a, const BN &b);
 
     /**
      * Return the min one between a and b
-     * @param a
-     * @param b
+     * @param[in] a
+     * @param[in] b
      * @return min(a, b)
      */
     static BN Min(const BN &a, const BN &b);
 
     /**
      * Swap the values between a and b
-     * @param a
-     * @param b
+     * @param[in] a
+     * @param[in] b
      */
     static void Swap(BN &a, BN &b);
 
     /**
      * Set the bit in position "index".
-     * @param index the index of the bit
+     * @param[in] index the index of the bit
      */
     void SetBit(unsigned long index);
 
     /**
      * Clear the bit in position "index".
-     * @param index the index of the bit
+     * @param[in] index the index of the bit
      */
     void ClearBit(unsigned long bit_index);
 
     /**
      * Check if the bit was set in position "index"
-     * @param index
+     * @param[in] index
      * @return true if the bit was set, false otherwise.
      */
     bool IsBitSet(unsigned long index) const;
 
     /**
      * Inspect the value.
-     * @param radix 10 or 16 radix number
+     * @param[in] radix 10 or 16 radix number
      * @return A string which indicate this BN to the specified radix.
      */
     std::string Inspect(int radix = 16) const;
@@ -601,8 +599,8 @@ public:
      * Compute jacobi symbol (n, k)
      *
      * Refer to the page: https://en.wikipedia.org/wiki/Jacobi_symbol
-     * @param n
-     * @param k
+     * @param[in] n
+     * @param[in] k
      * @return jacobi(n, k)
      */
     static int JacobiSymbol(const BN &k, const BN &n);
