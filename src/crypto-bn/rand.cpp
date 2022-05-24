@@ -25,21 +25,20 @@ using safeheron::exception::RandomSourceException;
 namespace safeheron{
 namespace rand{
 
-bool RandomBytes(unsigned char *buf, size_t size) {
+void RandomBytes(unsigned char *buf, size_t size) {
     int ret = 0;
     if (!buf) {
-        throw RandomSourceException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw RandomSourceException(__FILE__, __LINE__, __FUNCTION__, -1, "!buf");
     }
     if ((ret = RAND_bytes(buf, size)) <= 0) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = RAND_bytes(buf, size)) <= 0");
     }
-    return true;
 }
 
 BN RandomBN(size_t byteSize) {
     BN n;
     std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
-    if (buf.get() == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
+    if (buf.get() == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize, "buf.get() == nullptr");
     do{
         RandomBytes(buf.get(), byteSize);
         n = BN::FromBytesBE(buf.get(), byteSize);
@@ -49,7 +48,7 @@ BN RandomBN(size_t byteSize) {
 
 BN RandomBNStrict(size_t byteSize) {
     std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
-    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize);
+    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize, "buf == nullptr");
     do {
         RandomBytes(buf.get(), byteSize);
     }while((buf[0] & 0x80) == 0);
@@ -62,12 +61,12 @@ BN RandomPrime(size_t byteSize) {
     BIGNUM* p = nullptr;
     int ret = 0;
     if (!(p = BN_new())) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(p = BN_new())");
     }
     if ((ret = BN_generate_prime_ex(p, byteSize * 8, 0, nullptr, nullptr, nullptr)) != 1) {
         BN_clear_free(p);
         p = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_generate_prime_ex(p, byteSize * 8, 0, nullptr, nullptr, nullptr)) != 1");
     }
     n.Hold(p);
     return n;
@@ -86,12 +85,12 @@ BN RandomSafePrime(size_t byteSize) {
     BIGNUM* p = nullptr;
     int ret = 0;
     if (!(p = BN_new())) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(p = BN_new())");
     }
     if ((ret = BN_generate_prime_ex(p, byteSize * 8, 1, nullptr, nullptr, nullptr)) != 1) {
         BN_clear_free(p);
         p = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_generate_prime_ex(p, byteSize * 8, 1, nullptr, nullptr, nullptr)) != 1");
     }
     n.Hold(p);
     return n;

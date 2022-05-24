@@ -19,25 +19,31 @@
 namespace safeheron{
 namespace exception{
 
-///@brief BadAllocException class thrown when a memory allocation fails
+/**
+ * BadAllocException class thrown when a memory allocation fails
+ */
 class BadAllocException : public LocatedException
 {
 public:
-    explicit BadAllocException(const char * file_path, int line_num, const char * func, long internal_code) : LocatedException(file_path, line_num, func, internal_code) {}
+    explicit BadAllocException(const char * file_path, int line_num, const char * func, int internal_code, const char * message) : LocatedException(file_path, line_num, func, internal_code, message) {}
 };
 
-//! RandomSourceException class thrown when a generation of random bytes fails
+/**
+ * RandomSourceException class thrown when a generation of random bytes fails
+ */
 class RandomSourceException : public LocatedException
 {
 public:
-    explicit RandomSourceException(const char * file_path, int line_num, const char * func, long internal_code) : LocatedException(file_path, line_num, func, internal_code) {}
+    explicit RandomSourceException(const char * file_path, int line_num, const char * func, int internal_code, const char * message) : LocatedException(file_path, line_num, func, internal_code, message) {}
 };
 
-//! OpensslException class thrown when a exception for error code in openssl library
+/**
+ * OpensslException class thrown when a exception for error code in openssl library
+ */
 class OpensslException : public LocatedException
 {
 public:
-    explicit OpensslException(const char * file_path, int line_num, const char * func, long internal_code) : LocatedException(file_path, line_num, func, internal_code) {}
+    explicit OpensslException(const char * file_path, int line_num, const char * func, int internal_code, const char * message) : LocatedException(file_path, line_num, func, internal_code, message) {}
 };
 
 }

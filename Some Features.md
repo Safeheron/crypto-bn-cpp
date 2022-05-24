@@ -61,6 +61,7 @@ EXPECT_TRUE((bn17 == 3) && (bn18 == -1)); // TRUE!
 ```
 
 ### For shift operations
+The symbol "-" is ignored.
 ```c++
 BN bn3("-1011", 2);
 BN bn4("-10110000000000",2);

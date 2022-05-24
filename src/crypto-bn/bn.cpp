@@ -24,7 +24,11 @@ namespace safeheron {
 namespace bignum {
 
 
-// convert binary string to hex str
+/**
+ * convert binary string to hex str
+ * @param[in] s
+ * @return a hex string
+ */
 static std::string bin2hex(const std::string &s) {
     const char chs[17] = "0123456789ABCDEF";
     std::string padded_str;
@@ -85,7 +89,7 @@ BN::BN()
         : bn_(nullptr)
 {
     if (!(bn_ = BN_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(bn_ = BN_new())");
     }
     // BN_zero() never fails and returns no value.
     BN_zero(bn_);
@@ -100,20 +104,20 @@ BN::BN(long i)
 {
     int ret = 0;
     if (!(bn_ = BN_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, 0, "!(bn_ = BN_new())");
     }
     if (i >= 0) {
         if ((ret = BN_set_word(bn_, i)) != 1) {
             BN_clear_free(bn_);
             bn_ = nullptr;
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_set_word(bn_, i)) != 1");
         }
     }
     else {
         if ((ret = BN_set_word(bn_, -i) ) != 1) {
             BN_clear_free(bn_);
             bn_ = nullptr;
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_set_word(bn_, -i) ) != 1");
         }
         BN_set_negative(bn_, 1);
     }
@@ -132,7 +136,7 @@ BN::BN(const char *str, int base)
 
     int ret = 0;
     if (!(bn_ = BN_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, 0, "!(bn_ = BN_new())");
     }
 
     switch (base)
@@ -143,7 +147,7 @@ BN::BN(const char *str, int base)
             if ((ret = BN_hex2bn(&bn_, hex_str.c_str())) <= 0) {
                 BN_clear_free(bn_);
                 bn_ = nullptr;
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_hex2bn(&bn_, hex_str.c_str())) <= 0");
             }
             break;
         }
@@ -151,23 +155,19 @@ BN::BN(const char *str, int base)
             if ((ret = BN_dec2bn(&bn_, str)) <= 0) {
                 BN_clear_free(bn_);
                 bn_ = nullptr;
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_dec2bn(&bn_, str)) <= 0");
             }
             break;
         case 16:
             if ((ret = BN_hex2bn(&bn_, str)) <= 0) {
                 BN_clear_free(bn_);
                 bn_ = nullptr;
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_hex2bn(&bn_, str)) <= 0");
             }
             break;
         default:
-            if ((ret = BN_set_word(bn_, 0)) != 1) {
-                BN_clear_free(bn_);
-                bn_ = nullptr;
-                throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
-            }
-            break;
+            // invalid base
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, base, "invalid base");
     }
 }
 
@@ -190,7 +190,7 @@ BN::BN(const BN &num)
         : bn_(nullptr)
 {
     if (!(bn_ = BN_dup(num.bn_))) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(bn_ = BN_dup(num.bn_))");
     }
 }
 
@@ -206,14 +206,14 @@ BN &BN::operator=(const BN &num)
         return *this;
     }
     if (!(BN_copy(bn_, num.bn_))) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(BN_copy(bn_, num.bn_))");
     }
     return *this;
 }
 
 /**
  * A move constructor
- * @param[in] num
+ * @param[in, out] num
  */
 BN::BN(BN &&num) noexcept
         : bn_(nullptr)
@@ -224,7 +224,7 @@ BN::BN(BN &&num) noexcept
 
 /**
  * A move assignment operator
- * @param[in] num
+ * @param[in,out] num
  * @return A BN object moved from num.
  */
 BN &BN::operator=(BN &&num) noexcept
@@ -252,7 +252,7 @@ BN BN::operator+(const BN &num) const
     int ret = 0;
     assert(bn_ && n.bn_ && num.bn_);
     if ((ret = BN_add(n.bn_, bn_, num.bn_)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add(n.bn_, bn_, num.bn_)) != 1");
     }
     return n;
 }
@@ -268,7 +268,7 @@ BN BN::operator-(const BN &num) const
     int ret = 0;
     assert(bn_ && n.bn_ && num.bn_);
     if ((ret = BN_sub(n.bn_, bn_, num.bn_)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub(n.bn_, bn_, num.bn_)) != 1");
     }
     return n;
 }
@@ -287,12 +287,12 @@ BN BN::operator*(const BN &num) const
     assert(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_mul(n.bn_, bn_, num.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul(n.bn_, bn_, num.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -313,12 +313,12 @@ BN BN::operator/(const BN &num) const
     assert(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_div(n.bn_, nullptr, bn_, num.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div(n.bn_, nullptr, bn_, num.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -335,7 +335,7 @@ BN &BN::operator+=(const BN &num)
     int ret = 0;
     assert(bn_ && num.bn_);
     if ((ret = BN_add(bn_, bn_, num.bn_)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add(bn_, bn_, num.bn_)) != 1");
     }
     return *this;
 }
@@ -350,7 +350,7 @@ BN &BN::operator-=(const BN &num)
     int ret = 0;
     assert(bn_ && num.bn_);
     if ((ret = BN_sub(bn_, bn_, num.bn_)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub(bn_, bn_, num.bn_)) != 1");
     }
     return *this;
 }
@@ -368,12 +368,12 @@ BN &BN::operator*=(const BN &num)
     assert(bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_mul(bn_, bn_, num.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul(bn_, bn_, num.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -393,12 +393,12 @@ BN &BN::operator/=(const BN &num)
     assert(bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_div(bn_, nullptr, bn_, num.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div(bn_, nullptr, bn_, num.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -419,11 +419,11 @@ BN BN::operator+(long si) const
 
     if (si >= 0) {
         if ((ret = BN_add_word(n.bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add_word(n.bn_, si)) != 1");
         }
     } else {
         if ((ret = BN_sub_word(n.bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub_word(n.bn_, -si)) != 1");
         }
     }
     return n;
@@ -443,11 +443,11 @@ BN BN::operator-(long si) const
 
     if (si >= 0) {
         if ((ret = BN_sub_word(n.bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub_word(n.bn_, si)) != 1");
         }
     } else {
         if ((ret = BN_add_word(n.bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add_word(n.bn_, -si)) != 1");
         }
     }
     return n;
@@ -467,13 +467,13 @@ BN BN::operator*(long si) const
 
     if (si >= 0) {
         if ((ret = BN_mul_word(n.bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul_word(n.bn_, si)) != 1");
         }
     }
     else {
         BN_set_negative(n.bn_, 1);
         if ((ret = BN_mul_word(n.bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul_word(n.bn_, -si)) != 1");
         }
     }
     return n;
@@ -492,13 +492,13 @@ BN BN::operator/(long si) const
     assert(n.bn_);
     if (si >= 0) {
         if ((ret = BN_div_word(n.bn_, si)) == (BN_ULONG)-1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(n.bn_, si)) == (BN_ULONG)-1");
         }
     }
     else {
         BN_set_negative(n.bn_, 1);
         if ((ret = BN_div_word(n.bn_, -si)) == (BN_ULONG)-1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(n.bn_, -si)) == (BN_ULONG)-1");
         }
     }
     return n;
@@ -516,11 +516,11 @@ BN &BN::operator+=(long si)
     assert(bn_);
     if (si >= 0) {
         if ((ret = BN_add_word(bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add_word(bn_, si)) != 1");
         }
     } else {
         if ((ret = BN_sub_word(bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub_word(bn_, -si)) != 1");
         }
     }
     return *this;
@@ -538,11 +538,11 @@ BN &BN::operator-=(long si)
     assert(bn_);
     if (si >= 0) {
         if ((ret = BN_sub_word(bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub_word(bn_, si)) != 1");
         }
     } else {
         if ((ret = BN_add_word(bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add_word(bn_, -si)) != 1");
         }
     }
     return *this;
@@ -560,13 +560,13 @@ BN &BN::operator*=(long si)
     assert(bn_);
     if (si >= 0) {
         if ((ret = BN_mul_word(bn_, si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul_word(bn_, si)) != 1");
         }
     }
     else {
         BN_set_negative(bn_, 1);
         if ((ret = BN_mul_word(bn_, -si)) != 1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul_word(bn_, -si)) != 1");
         }
     }
     return *this;
@@ -584,12 +584,12 @@ BN &BN::operator/=(long si)
     assert(bn_);
     if (si >= 0) {
         if ((ret = BN_div_word(bn_, si)) == (BN_ULONG)-1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(bn_, si)) == (BN_ULONG)-1");
         }
     } else {
         BN_set_negative(bn_, 1);
         if ((ret = BN_div_word(bn_, -si)) == (BN_ULONG)-1) {
-            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+            throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(bn_, -si)) == (BN_ULONG)-1");
         }
     }
     return *this;
@@ -609,12 +609,12 @@ BN BN::operator%(const BN &num) const
     assert(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_nnmod(n.bn_, n.bn_, num.bn_, ctx)) != 1){
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_nnmod(n.bn_, n.bn_, num.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -642,7 +642,7 @@ BN BN::operator<<(unsigned long ui) const
     int ret = 0;
     assert(bn_ && n.bn_);
     if ((ret = BN_lshift(n.bn_, bn_, ui)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_lshift(n.bn_, bn_, ui)) != 1");
     }
     return n;
 }
@@ -658,7 +658,7 @@ BN BN::operator>>(unsigned long ui) const
     int ret = 0;
     assert(bn_ && n.bn_);
     if ((ret = BN_rshift(n.bn_, bn_, ui)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_rshift(n.bn_, bn_, ui)) != 1");
     }
     return n;
 }
@@ -673,7 +673,7 @@ BN &BN::operator<<=(unsigned long ui)
     int ret = 0;
     assert(bn_);
     if ((ret = BN_lshift(bn_, bn_, ui)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_lshift(bn_, bn_, ui)) != 1");
     }
     return *this;
 }
@@ -688,7 +688,7 @@ BN &BN::operator>>=(unsigned long ui)
     int ret = 0;
     assert(bn_);
     if ((ret = BN_rshift(bn_, bn_, ui)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_rshift(bn_, bn_, ui)) != 1");
     }
     return *this;
 }
@@ -700,6 +700,7 @@ BN &BN::operator>>=(unsigned long ui)
  */
 bool BN::operator==(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == 0;
 }
 
@@ -710,6 +711,7 @@ bool BN::operator==(const BN &num) const
  */
 bool BN::operator!=(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) != 0;
 }
 
@@ -720,6 +722,7 @@ bool BN::operator!=(const BN &num) const
  */
 bool BN::operator<(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == -1;
 }
 
@@ -730,6 +733,7 @@ bool BN::operator<(const BN &num) const
  */
 bool BN::operator<=(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) <= 0;
 }
 
@@ -740,6 +744,7 @@ bool BN::operator<=(const BN &num) const
  */
 bool BN::operator>(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == 1;
 }
 
@@ -750,6 +755,7 @@ bool BN::operator>(const BN &num) const
  */
 bool BN::operator>=(const BN &num) const
 {
+    assert(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) >= 0;
 }
 
@@ -760,6 +766,7 @@ bool BN::operator>=(const BN &num) const
  */
 bool BN::operator==(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this == n;
 }
@@ -771,6 +778,7 @@ bool BN::operator==(long si) const
  */
 bool BN::operator!=(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this != n;
 }
@@ -782,6 +790,7 @@ bool BN::operator!=(long si) const
  */
 bool BN::operator>(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this > n;
 }
@@ -793,6 +802,7 @@ bool BN::operator>(long si) const
  */
 bool BN::operator<(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this < n;
 }
@@ -804,6 +814,7 @@ bool BN::operator<(long si) const
  */
 bool BN::operator>=(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this >= n;
 }
@@ -815,6 +826,7 @@ bool BN::operator>=(long si) const
  */
 bool BN::operator<=(long si) const
 {
+    assert(bn_);
     BN n(si);
     return *this <= n;
 }
@@ -824,6 +836,7 @@ bool BN::operator<=(long si) const
 */
 BN BN::Neg() const
 {
+    assert(bn_);
     BN n(*this);
     if (n.IsNeg()) {
         BN_set_negative(n.bn_, 0);
@@ -842,15 +855,16 @@ BN BN::Neg() const
  */
 void BN::Div(const BN &d, BN &q, BN &r)
 {
+    assert(bn_ && d.bn_ && q.bn_ && r.bn_);
     int ret = 0;
     BN_CTX* ctx = nullptr;
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_div(q.bn_, r.bn_, bn_, d.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div(q.bn_, r.bn_, bn_, d.bn_, ctx)");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -867,12 +881,12 @@ BN BN::InvM(const BN &m) const
     BN r;
     BN_CTX* ctx = nullptr;
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if (!BN_mod_inverse(r.bn_, bn_, m.bn_, ctx)) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!BN_mod_inverse(r.bn_, bn_, m.bn_, ctx)");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -890,12 +904,12 @@ BN BN::Gcd(const BN &n) const
     BN_CTX* ctx = nullptr;
     int ret = 0;
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_gcd(r.bn_, bn_, n.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_gcd(r.bn_, bn_, n.bn_, ctx)) != 1");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -924,17 +938,18 @@ BN BN::Lcm(const BN &n) const
  */
 BN BN::PowM(const BN &y, const BN &m) const
 {
+    assert(bn_ && y.bn_ && m.bn_);
     BN r;
     BN t_y = y.IsNeg()? y.Neg() : y;
     BN_CTX* ctx = nullptr;
     int ret = 0;
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if ((ret = BN_mod_exp(r.bn_, bn_, t_y.bn_, m.bn_, ctx)) != 1) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mod_exp(r.bn_, bn_, t_y.bn_, m.bn_, ctx)) != 1");
 
     }
     BN_CTX_free(ctx);
@@ -960,12 +975,12 @@ BN BN::SqrtM(const BN &p) const
     BN r;
     BN_CTX* ctx = nullptr;
     if (!(ctx = BN_CTX_new())) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
     }
     if (!(BN_mod_sqrt(r.bn_, bn_, p.bn_, ctx))) {
         BN_CTX_free(ctx);
         ctx = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(BN_mod_sqrt(r.bn_, bn_, p.bn_, ctx))");
     }
     BN_CTX_free(ctx);
     ctx = nullptr;
@@ -1016,7 +1031,7 @@ BN BN::FromHexStr(const char *str)
         n.bn_ = nullptr;
     }
     if ((ret = BN_hex2bn(&n.bn_, str)) == 0) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_hex2bn(&n.bn_, str)) == 0");
     }
     return n;
 }
@@ -1047,7 +1062,7 @@ BN BN::FromDecStr(const char *str)
         n.bn_ = nullptr;
     }
     if ((ret = BN_dec2bn(&n.bn_, str)) == 0) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_dec2bn(&n.bn_, str)) == 0");
     }
     return n;
 }
@@ -1064,13 +1079,13 @@ BN BN::FromDecStr(const std::string &str)
 
 /**
  * Conversion from BN to HEX string
- * @param[in] str
+ * @param[in, out] str
  */
 void BN::ToHexStr(std::string &str) const
 {
     char *ch = BN_bn2hex((const BIGNUM*)bn_);
     if (ch == nullptr) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "ch == nullptr");
     }
 
     str.assign(ch, strlen(ch));
@@ -1080,13 +1095,13 @@ void BN::ToHexStr(std::string &str) const
 
 /**
  * Conversion from BN to HEX string
- * @param[in] str
+ * @param[in,out] str
  */
 void BN::ToDecStr(std::string &str) const
 {
     char *ch = BN_bn2dec((const BIGNUM*)bn_);
     if (ch == nullptr) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "ch == nullptr");
     }
 
     str.assign(ch, strlen(ch));
@@ -1106,7 +1121,7 @@ BN BN::FromBytesBE(const uint8_t *buf, int len)
 
     BN n;
     if (!BN_bin2bn(buf, len, n.bn_)) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!BN_bin2bn(buf, len, n.bn_)");
     }
     return n;
 }
@@ -1133,7 +1148,7 @@ BN BN::FromBytesLE(const uint8_t *buf, int len)
 
     BN n;
     if (!BN_lebin2bn(buf, len, n.bn_)) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!BN_lebin2bn(buf, len, n.bn_)");
     }
     return n;
 }
@@ -1150,7 +1165,7 @@ BN BN::FromBytesLE(const std::string &buf)
 
 /**
  * Conversion to bytes string in big endian
- * @param[in] buf
+ * @param[out] buf
  */
 void BN::ToBytesBE(std::string &buf) const
 {
@@ -1162,14 +1177,14 @@ void BN::ToBytesBE(std::string &buf) const
 
     uint8_t* ch = (uint8_t*)OPENSSL_malloc(len);
     if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
     }
 
     memset(ch, 0, len);
     if ((len = BN_bn2bin(bn_, ch)) <= 0) {
         OPENSSL_free(ch);
         ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2bin(bn_, ch)) <= 0");
     }
 
     buf.assign((const char*)ch, len);
@@ -1179,7 +1194,7 @@ void BN::ToBytesBE(std::string &buf) const
 
 /**
  * Conversion to bytes string in little endian
- * @param[in] buf
+ * @param[out] buf
  */
 void BN::ToBytesLE(std::string &buf) const
 {
@@ -1191,14 +1206,14 @@ void BN::ToBytesLE(std::string &buf) const
 
     uint8_t* ch = (uint8_t*)OPENSSL_malloc(len);
     if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
     }
 
     memset(ch, 0, len);
     if ((len = BN_bn2lebinpad(bn_, ch, len)) <= 0) {
         OPENSSL_free(ch);
         ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2lebinpad(bn_, ch, len)) <= 0");
     }
 
     buf.assign((const char*)ch, len);
@@ -1208,7 +1223,7 @@ void BN::ToBytesLE(std::string &buf) const
 
 /**
  * Conversion to bytes string in big endian, which is 32 in length by byte
- * @param[in] buf32
+ * @param[out] buf32
  * @param[in] blen
  */
 void BN::ToBytes32BE(uint8_t *buf32, int blen) const
@@ -1224,14 +1239,14 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
 
     uint8_t*ch = (uint8_t*)OPENSSL_malloc(len);
     if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
     }
 
     memset(ch, 0, len);
     if ((len = BN_bn2bin(bn_, ch)) <= 0) {
         OPENSSL_free(ch);
         ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2bin(bn_, ch)) <= 0");
     }
 
     if (len < 32) {
@@ -1248,7 +1263,7 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
 
 /**
  * Conversion to bytes string in little endian, which is 32 in length by byte
- * @param[in] buf32
+ * @param[out] buf32
  * @param[in] blen
  */
 void BN::ToBytes32LE(uint8_t *buf32, int blen) const
@@ -1264,17 +1279,18 @@ void BN::ToBytes32LE(uint8_t *buf32, int blen) const
 
     uint8_t* ch = (uint8_t*)OPENSSL_malloc(len);
     if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
     }
 
     memset(ch, 0, len);
     if ((len = BN_bn2lebinpad(bn_, ch, len)) <= 0) {
         OPENSSL_free(ch);
         ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len);
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2lebinpad(bn_, ch, len)) <= 0");
     }
 
     if (len < 32) {
+        // memcpy_s
         memcpy(buf32, ch, len);
     }
     else {
@@ -1287,7 +1303,7 @@ void BN::ToBytes32LE(uint8_t *buf32, int blen) const
 
 /**
  * Conversion to bytes string in big endian, which is 32 in length by byte
- * @param[in] buf
+ * @param[out] buf
  */
 void BN::ToBytes32BE(std::string &buf) const
 {
@@ -1298,7 +1314,7 @@ void BN::ToBytes32BE(std::string &buf) const
 
 /**
  * Conversion to bytes string in little endian, which is 32 in length by byte
- * @param[in] buf
+ * @param[out] buf
  */
 void BN::ToBytes32LE(std::string &buf) const
 {
@@ -1401,8 +1417,8 @@ BN BN::Min(const BN &a, const BN &b)
 
 /**
  * Swap the values between a and b
- * @param[in] a
- * @param[in] b
+ * @param[in,out] a
+ * @param[in,out] b
  */
 void BN::Swap(BN &a, BN &b)
 {
@@ -1414,13 +1430,13 @@ void BN::Swap(BN &a, BN &b)
  * Set the bit in position "index".
  * @param[in] index the index of the bit
  */
-void BN::SetBit(unsigned long bit_index)
+void BN::SetBit(unsigned long index)
 {
     assert(bn_);
 
     int ret = 0;
-    if ((ret = BN_set_bit(bn_, bit_index)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+    if ((ret = BN_set_bit(bn_, index)) != 1) {
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_set_bit(bn_, index)) != 1");
     }
 }
 
@@ -1428,13 +1444,13 @@ void BN::SetBit(unsigned long bit_index)
  * Clear the bit in position "index".
  * @param[in] index the index of the bit
  */
-void BN::ClearBit(unsigned long bit_index)
+void BN::ClearBit(unsigned long index)
 {
     assert(bn_);
 
     int ret = 0;
-    if ((ret = BN_clear_bit(bn_, bit_index)) != 1) {
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret);
+    if ((ret = BN_clear_bit(bn_, index)) != 1) {
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_clear_bit(bn_, index)) != 1");
     }
 }
 
@@ -1443,10 +1459,10 @@ void BN::ClearBit(unsigned long bit_index)
  * @param[in] index
  * @return true if the bit was set, false otherwise.
  */
-bool BN::IsBitSet(unsigned long bit_index) const
+bool BN::IsBitSet(unsigned long index) const
 {
     assert(bn_);
-    return BN_is_bit_set(bn_, bit_index) == 1;
+    return BN_is_bit_set(bn_, index) == 1;
 }
 
 /**
@@ -1567,7 +1583,7 @@ int BN::JacobiSymbol(const BN &_k, const BN &_n){
     BN r;
     // Check n: n is positive and odd
     if (n <= 0 || n.IsEven()) {
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1);
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "n <= 0 || n.IsEven()");
     }
 
     // Rule 2

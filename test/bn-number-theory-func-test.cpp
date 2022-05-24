@@ -127,7 +127,7 @@ TEST(BN, SquareRootModuloP)
     try {
         BN r1 = n1.SqrtM(p1);
     }catch (const LocatedException &e) {
-        std::cout << e.detail() << std::endl;
+        std::cout << e.what() << std::endl;
     }
 
     BN p2(5);

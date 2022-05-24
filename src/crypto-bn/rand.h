@@ -19,9 +19,8 @@ namespace rand {
  * Sample random bytes.
  * @param buf
  * @param size
- * @return true if successful, false otherwise.
  */
-bool RandomBytes(unsigned char * buf, size_t size);
+void RandomBytes(unsigned char * buf, size_t size);
 
 /**
  * Sample random BN.

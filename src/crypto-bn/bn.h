@@ -55,13 +55,13 @@ public:
 
     /**
      * A move constructor
-     * @param[in] num
+     * @param[in, out] num
      */
     BN(BN &&num) noexcept;
 
     /**
      * A move assignment operator
-     * @param[in] num
+     * @param[in,out] num
      * @return A BN object moved from num.
      */
     BN &operator=(BN &&num) noexcept;
@@ -413,13 +413,13 @@ public:
 
     /**
      * Conversion from BN to HEX string
-     * @param[in] str
+     * @param[out] str
      */
     void ToHexStr(std::string &str) const;
 
     /**
-     * Conversion from BN to HEX string
-     * @param[in] str
+     * Conversion from BN to decimal string
+     * @param[out] str
      */
     void ToDecStr(std::string &str) const;
 
@@ -455,38 +455,38 @@ public:
 
     /**
      * Conversion to bytes string in big endian
-     * @param[in] buf
+     * @param[out] buf
      */
     void ToBytesBE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in little endian
-     * @param[in] buf
+     * @param[out] buf
      */
     void ToBytesLE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in big endian, which is 32 in length by byte
-     * @param[in] buf
+     * @param[out] buf
      */
     void ToBytes32BE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in little endian, which is 32 in length by byte
-     * @param[in] buf
+     * @param[out] buf
      */
     void ToBytes32LE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in big endian, which is 32 in length by byte
-     * @param[in] buf32
+     * @param[out] buf32
      * @param[in] blen
      */
     void ToBytes32BE(uint8_t *buf32, int blen=32) const;
 
     /**
      * Conversion to bytes string in little endian, which is 32 in length by byte
-     * @param[in] buf32
+     * @param[out] buf32
      * @param[in] blen
      */
     void ToBytes32LE(uint8_t *buf32, int blen=32) const;
@@ -552,8 +552,8 @@ public:
 
     /**
      * Swap the values between a and b
-     * @param[in] a
-     * @param[in] b
+     * @param[in,out] a
+     * @param[in,out] b
      */
     static void Swap(BN &a, BN &b);
 
@@ -567,7 +567,7 @@ public:
      * Clear the bit in position "index".
      * @param[in] index the index of the bit
      */
-    void ClearBit(unsigned long bit_index);
+    void ClearBit(unsigned long index);
 
     /**
      * Check if the bit was set in position "index"
@@ -578,10 +578,10 @@ public:
 
     /**
      * Inspect the value.
-     * @param[in] radix 10 or 16 radix number
-     * @return A string which indicate this BN to the specified radix.
+     * @param[in] base 10 or 16 radix number
+     * @return A string which indicate this BN to the specified base.
      */
-    std::string Inspect(int radix = 16) const;
+    std::string Inspect(int base = 16) const;
 
     /**
      * Extended Euclidean algorithm
