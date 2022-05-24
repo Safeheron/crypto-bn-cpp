@@ -6,8 +6,8 @@ Cross-platform library of big number in C++.
 
 # Prerequisites
 
-- [GoogleTest](https://github.com/google/googletest). You need it to compile and run test cases. See the [GoogleTest Installation Instructions](./GoogleTest-Installation.md)
 - [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
+- [GoogleTest](https://github.com/google/googletest). **You need it to compile and run test cases**. See the [GoogleTest Installation Instructions](./GoogleTest-Installation.md)
 
 # Build and Install
 

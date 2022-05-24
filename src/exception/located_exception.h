@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Safeheron Inc. All Rights Reserved.
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
  *
  * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -14,9 +14,6 @@
 #define EXCEPTION_BUF_SIZE_FUNC 24
 #define EXCEPTION_BUF_SIZE_MESSAGE 128
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string.h>
 #include <stdexcept>
 

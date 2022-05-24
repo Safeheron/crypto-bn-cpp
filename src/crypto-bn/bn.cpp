@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Safeheron Inc. All Rights Reserved.
+ * Copyright 2020-2022 Safeheron Inc. All Rights Reserved.
  *
  * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -10,7 +10,6 @@
 #include "bn.h"
 #include <cassert>
 #include <cstring>
-#include <sstream>
 #include <string>
 #include <openssl/bn.h>
 #include "../exception/safeheron_exceptions.h"
@@ -34,8 +33,8 @@ static std::string bin2hex(const std::string &s) {
     std::string padded_str;
     std::string out;
     // Range of valid hex
-    uint start = 0;
-    uint end = 0;
+    unsigned start = 0;
+    unsigned end = 0;
 
     // neg
     if (s[0] == '-') {
