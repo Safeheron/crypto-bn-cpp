@@ -1579,28 +1579,45 @@ int BN::JacobiSymbol(const BN &_k, const BN &_n){
     int symbol = 1;
     BN n = _n;
     BN k = _k;
-    BN r;
-    // Check n: n is positive and odd
-    if (n <= 0 || n.IsEven()) {
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "n <= 0 || n.IsEven()");
-    }
+    int r = 0;
 
     // Rule 2
     k = k % n;
     while (k != 0){
-        // Rule 9
-        while (k.IsEven()){
-            k >>= 1;
-            r = n % 8;
-            if( r == 3 || r == 5){
-                symbol = -1 * symbol;
+        // Rule 9, k = 2^s * a
+        int s = 0;
+        while (!k.IsBitSet(s)){
+            s++;
+        }
+        k >>= s;
+        if(s % 2 == 1){
+            // r = n % 8;
+            r = 0;
+            if(n.IsBitSet(0)) r |= 0x1;
+            if(n.IsBitSet(1)) r |= 0x2;
+            if(n.IsBitSet(2)) r |= 0x4;
+            if( (r == 3) || (r == 5) ){
+                symbol *= -1;
             }
         }
         // Rule 6
         BN::Swap(k, n);
-        if( (n % 4 == 3) && (k % 4 == 3) ){
-            symbol = -1 * symbol;
+
+        // remain_n = n % 4
+        int remain_n = 0;
+        if(n.IsBitSet(0)) remain_n |= 0x1;
+        if(n.IsBitSet(1)) remain_n |= 0x2;
+
+        // remain_k = k % 4
+        int remain_k = 0;
+        if(k.IsBitSet(0)) remain_k |= 0x1;
+        if(k.IsBitSet(1)) remain_k |= 0x2;
+
+        // if( (n % 4 == 3) && (k % 4 == 3) ){
+        if( (remain_n == 3) && (remain_k == 3) ){
+            symbol = -symbol;
         }
+
         // Rule 2
         k = k % n;
     }

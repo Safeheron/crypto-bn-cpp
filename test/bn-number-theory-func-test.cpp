@@ -274,34 +274,6 @@ TEST(BN, ExtendedEuclidean)
     EXPECT_TRUE(y == -1);
 }
 
-TEST(BN, JacobiSymbol)
-{
-    // (1001, 9907) = -1
-    BN k(1001);
-    BN n(9907);
-    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
-
-    // (19, 45) = 1
-    k = BN(19);
-    n = BN(45);
-    EXPECT_TRUE(BN::JacobiSymbol(k, n) == 1);
-
-    // (8, 21) = -1
-    k = BN(8);
-    n = BN(21);
-    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
-
-    // (5, 21) = 1
-    k = BN(5);
-    n = BN(21);
-    EXPECT_TRUE(BN::JacobiSymbol(k, n) == 1);
-
-    // (12345, 3371) = -1
-    k = BN(12345);
-    n = BN(3371);
-    EXPECT_TRUE(BN::JacobiSymbol(k, n) == -1);
-}
-
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

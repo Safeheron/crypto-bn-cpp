@@ -45,4 +45,7 @@ add_test(NAME bn-string-conversion-test COMMAND bn-string-conversion-test)
 add_executable(rnd-test rnd-test.cpp)
 add_test(NAME rnd-test COMMAND rnd-test)
 
+add_executable(bn-jacobi-test bn-jacobi-test.cpp)
+add_test(NAME bn-jacobi-test COMMAND bn-jacobi-test)
+
 
