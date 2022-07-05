@@ -24,45 +24,45 @@ void RandomBytes(unsigned char * buf, size_t size);
 
 /**
  * Sample random BN.
- * @param byteSize length by byte.
+ * @param bits
  * @return a random BN.
  */
-safeheron::bignum::BN RandomBN(size_t byteSize);
+safeheron::bignum::BN RandomBN(size_t bits);
 
 /**
  * Sample random BN whose highest bit is 1.
- * @param byteSize length by byte.
+ * @param bits
  * @return a random BN.
  */
-safeheron::bignum::BN RandomBNStrict(size_t byteSize);
+safeheron::bignum::BN RandomBNStrict(size_t bits);
 
 /**
  * Sample random prime.
- * @param byteSize length by byte.
+ * @param bits.
  * @return a random BN.
  */
-safeheron::bignum::BN RandomPrime(size_t byteSize);
+safeheron::bignum::BN RandomPrime(size_t bits);
 
 /**
  * Sample random prime whose highest bit is 1.
- * @param byteSize length by byte.
+ * @param bits.
  * @return a random prime.
  */
-safeheron::bignum::BN RandomPrimeStrict(size_t byteSize);
+safeheron::bignum::BN RandomPrimeStrict(size_t bits);
 
 /**
  * Sample random safe prime.
- * @param byteSize length by byte.
+ * @param bits.
  * @return a random safe prime.
  */
-safeheron::bignum::BN RandomSafePrime(size_t byteSize);
+safeheron::bignum::BN RandomSafePrime(size_t bits);
 
 /**
  * Sample random safe prime whose highest bit is 1.
- * @param byteSize length by byte.
+ * @param bits.
  * @return a random safe prime.
  */
-safeheron::bignum::BN RandomSafePrimeStrict(size_t byteSize);
+safeheron::bignum::BN RandomSafePrimeStrict(size_t bits);
 
 /**
  * Sample random BN which is less than "max".

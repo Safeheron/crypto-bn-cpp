@@ -4,6 +4,44 @@
 
 Cross-platform library of big number in C++.
 
+# Important Update
+
+The input of the random number generator changes from "bytes" to "bits". 
+
+- The new generators:
+```c++
+safeheron::bignum::BN RandomBN(size_t bits);
+safeheron::bignum::BN RandomBNStrict(size_t bits);
+safeheron::bignum::BN RandomPrime(size_t bits);
+safeheron::bignum::BN RandomPrimeStrict(size_t bits);
+safeheron::bignum::BN RandomSafePrime(size_t bits);
+safeheron::bignum::BN RandomSafePrimeStrict(size_t bits);
+```
+
+- The old generators:
+```c++
+safeheron::bignum::BN RandomBN(size_t byteSize);
+safeheron::bignum::BN RandomBNStrict(size_t byteSize);
+safeheron::bignum::BN RandomPrime(size_t byteSize);
+safeheron::bignum::BN RandomPrimeStrict(size_t byteSize);
+safeheron::bignum::BN RandomSafePrime(size_t byteSize);
+safeheron::bignum::BN RandomSafePrimeStrict(size_t byteSize);
+```
+
+
+**Along with the update, all the usage should update too, otherwise there is a risk.**.
+
+For example, we used to get a 256-bits number like this before:
+```c++
+    BN r = safeheron::bignum::BN RandomBN(256 / 8);
+```
+Now we must invoke the generator like this:
+```c++
+    BN r = safeheron::bignum::BN RandomBN(256);
+```
+**If usage don't update then you will get a small number with 32-bits length, and then it could easily be guessed out by the adversary.**
+
+
 # Prerequisites
 
 - [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
@@ -87,8 +125,8 @@ int main(){
 
 using safeheron::bignum::BN;
 int main(){
-    // Create a BN which is 32 bytes long. 
-    BN n = safeheron::rand::RandomBN(32);
+    // Create a BN which is 256 bits (32 bytes) long. 
+    BN n = safeheron::rand::RandomBN(256);
     max = n;
     n.ToHexStr(s);
     std::cout << s << std::endl;

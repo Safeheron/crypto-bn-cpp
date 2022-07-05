@@ -33,35 +33,52 @@ void RandomBytes(unsigned char *buf, size_t size) {
     }
 }
 
-BN RandomBN(size_t byteSize) {
+BN RandomBN(size_t bits) {
     BN n;
-    std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
-    if (buf.get() == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize, "buf.get() == nullptr");
+    size_t bytes = (bits + 7) / 8;
+    size_t pad = bytes * 8 - bits; // 0 ~ 7
+    if (bits <= 0) {
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "bits <= 0");
+    }
+    std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[bytes]);
+    if (buf.get() == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, bytes, "buf.get() == nullptr");
     do{
-        RandomBytes(buf.get(), byteSize);
-        n = BN::FromBytesBE(buf.get(), byteSize);
+        RandomBytes(buf.get(), bytes);
+        uint8_t a = 0xff >> pad;
+        buf[0] &= a;
+        n = BN::FromBytesBE(buf.get(), bytes);
     }while(n == 0);
     return n;
 }
 
-BN RandomBNStrict(size_t byteSize) {
-    std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[byteSize]);
-    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, byteSize, "buf == nullptr");
+BN RandomBNStrict(size_t bits) {
+    size_t bytes = (bits + 7) / 8;
+    size_t pad = bytes * 8 - bits;
+    if (bits <= 0) {
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "bits <= 0");
+    }
+    std::unique_ptr<unsigned char[]> buf(new(std::nothrow) unsigned char[bytes]);
+    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, bytes, "buf == nullptr");
     do {
-        RandomBytes(buf.get(), byteSize);
-    }while((buf[0] & 0x80) == 0);
-    BN n = BN::FromBytesBE(buf.get(), byteSize);
+        RandomBytes(buf.get(), bytes);
+        uint8_t a = 0xff >> pad;
+        buf[0] &= a;
+    }while((buf[0] & (0x80 >> pad)) == 0);
+    BN n = BN::FromBytesBE(buf.get(), bytes);
     return n;
 }
 
-BN RandomPrime(size_t byteSize) {
+BN RandomPrime(size_t bits) {
     BN n;
     BIGNUM* p = nullptr;
     int ret = 0;
+    if (bits <= 0) {
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "bits <= 0");
+    }
     if (!(p = BN_new())) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(p = BN_new())");
     }
-    if ((ret = BN_generate_prime_ex(p, byteSize * 8, 0, nullptr, nullptr, nullptr)) != 1) {
+    if ((ret = BN_generate_prime_ex(p, bits, 0, nullptr, nullptr, nullptr)) != 1) {
         BN_clear_free(p);
         p = nullptr;
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_generate_prime_ex(p, byteSize * 8, 0, nullptr, nullptr, nullptr)) != 1");
@@ -70,22 +87,25 @@ BN RandomPrime(size_t byteSize) {
     return n;
 }
 
-BN RandomPrimeStrict(size_t byteSize) {
+BN RandomPrimeStrict(size_t bits) {
     BN n;
     do {
-        n = RandomPrime(byteSize);
-    }while (!n.IsBitSet(8*byteSize-1));
+        n = RandomPrime(bits);
+    }while (!n.IsBitSet(bits-1));
     return n;
 }
 
-BN RandomSafePrime(size_t byteSize) {
+BN RandomSafePrime(size_t bits) {
     BN n;
     BIGNUM* p = nullptr;
     int ret = 0;
+    if (bits <= 0) {
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "bits <= 0");
+    }
     if (!(p = BN_new())) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, 0, "!(p = BN_new())");
     }
-    if ((ret = BN_generate_prime_ex(p, byteSize * 8, 1, nullptr, nullptr, nullptr)) != 1) {
+    if ((ret = BN_generate_prime_ex(p, bits, 1, nullptr, nullptr, nullptr)) != 1) {
         BN_clear_free(p);
         p = nullptr;
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_generate_prime_ex(p, byteSize * 8, 1, nullptr, nullptr, nullptr)) != 1");
@@ -94,11 +114,11 @@ BN RandomSafePrime(size_t byteSize) {
     return n;
 }
 
-BN RandomSafePrimeStrict(size_t byteSize) {
+BN RandomSafePrimeStrict(size_t bits) {
     BN n;
     do {
-        n = RandomSafePrime(byteSize);
-    }while (!n.IsBitSet(8*byteSize-1));
+        n = RandomSafePrime(bits);
+    }while (!n.IsBitSet(bits - 1));
     return n;
 }
 
