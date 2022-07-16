@@ -3,6 +3,10 @@
 #include "crypto-bn/rand.h"
 #include "exception/safeheron_exceptions.h"
 
+#ifdef ENABLE_ASSEMBLE
+#include <google/protobuf/stubs/common.h>
+#endif
+
 using safeheron::bignum::BN;
 using safeheron::exception::LocatedException;
 using safeheron::exception::OpensslException;
@@ -575,5 +579,10 @@ TEST(BN, Jacobi_General)
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
+
+#ifdef ENABLE_ASSEMBLE
+    google::protobuf::ShutdownProtobufLibrary();
+#endif
+
     return ret;
 }
