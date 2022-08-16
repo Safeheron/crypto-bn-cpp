@@ -269,7 +269,7 @@ int main(){
 >- PowM(const BN & y, const BN & m) - Return the y-th power of this and modulo m r = (this ^ y) % m
 
 # Some features
-Refer to [Some Features.md](./Some Features.md)
+Refer to [Some Features](./Some Features.md)
 
 # Development Process & Contact
 This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail.
