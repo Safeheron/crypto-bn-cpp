@@ -109,7 +109,7 @@ TEST(Rand, TestExecption)
     }catch(const LocatedException &e) {
         std::cout << "Catch LocatedException: " << e.what() << std::endl;
     }catch(const std::exception &e) {
-        std::cout << "Catch LocatedException: " << e.what() << std::endl;
+        std::cout << "Catch LocatedException: " <<__FILE__ << ", " << __LINE__ << ", " << __FUNCTION__ << ": " << e.what() << std::endl;
     }
     std::cout << n.Inspect() << std::endl;
 }
@@ -182,6 +182,37 @@ TEST(Rand, SafePrimesInBits)
     rand_bn_in_bits(17);
 }
 
+void rand_bn_in_sym_interval(size_t key_bit){
+    std::string str;
+    BN p;
+    BN limit = BN::ONE << key_bit;
+
+    p = safeheron::rand::RandomNegBNInSymInterval(key_bit);
+    p.ToHexStr(str);
+    std::cout << "RandomNegBNInSymInterval(" << key_bit << "): " << str << std::endl;
+    EXPECT_LE(p.BitLength(), key_bit);
+
+    p = safeheron::rand::RandomNegBNInSymInterval(limit);
+    p.ToHexStr(str);
+    std::cout << "RandomNegBNInSymInterval(" << key_bit << "): " << str << std::endl;
+    EXPECT_LE(p.BitLength(), key_bit);
+}
+
+TEST(Rand, RandomNegBNInSymInterval)
+{
+    rand_bn_in_sym_interval(7);
+    rand_bn_in_sym_interval(9);
+    rand_bn_in_sym_interval(15);
+    rand_bn_in_sym_interval(17);
+}
+
+TEST(Rand, RandomBNInRange)
+{
+    for (int i = 0; i < 10; ++i) {
+        BN n = safeheron::rand::RandomBNInRange(BN(100), BN(1000));
+        std::cout << "n = " << n.Inspect(10) << std::endl;
+    }
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

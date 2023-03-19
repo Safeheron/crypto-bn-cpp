@@ -978,6 +978,35 @@ BN BN::SqrtM(const BN &p) const
 }
 
 /**
+ * @brief Calculate square root of this object
+ * 
+ * @return BN the square root of this big number
+ */
+BN BN::Sqrt() const
+{
+	int shift = 0;
+    BN mask(0);
+    BN sqrt(0);
+    BN x(*this);
+    BN r(0);
+
+	shift = BN_num_bits(bn_) / 2;
+
+	while (shift >= 0) {
+        mask = BN::ONE << shift;
+        sqrt = (mask + (r << 1)) << shift;
+
+        if (sqrt <= x) {
+            r += mask;
+            x -= sqrt;
+        }
+		shift--;
+    }
+
+    return r;
+}
+
+/**
  * Check if a square root 'r' exists where
  *      r^2 == this (mod p),
  * @param[in] m
@@ -1341,17 +1370,16 @@ size_t BN::BitLength() const
  * Return bytes size of this BN
  * @return bytes size.
  */
-int BN::ByteLength() const
+size_t BN::ByteLength() const
 {
-    int bitLen = BitLength();
-    return (bitLen % 8 == 0) ? (bitLen / 8) : (1 + bitLen / 8);
+    return (BitLength() + 7) / 8;
 }
 
 /**
  * Check if this BN is a negative number.
  * @return true if this BIGUN is a negative number, false otherwise.
  */
-int BN::IsNeg() const
+bool BN::IsNeg() const
 {
     return BN_is_negative(bn_) == 1;
 }
@@ -1360,7 +1388,7 @@ int BN::IsNeg() const
  * Check if this BN is even.
  * @return true if this BN is even, false otherwise.
  */
-int BN::IsEven() const
+bool BN::IsEven() const
 {
     return !IsOdd();
 }
@@ -1369,7 +1397,7 @@ int BN::IsEven() const
  * Check if this BN is odd.
  * @return true if this BN is odd, false otherwise.
  */
-int BN::IsOdd() const
+bool BN::IsOdd() const
 {
     return BN_is_odd(bn_) == 1;
 }
@@ -1378,7 +1406,7 @@ int BN::IsOdd() const
  * Check if this BN is equal to zero.
  * @return true if this BN is equal to zero, false otherwise.
  */
-int BN::IsZero() const
+bool BN::IsZero() const
 {
     return BN_is_zero(bn_) == 1;
 }

@@ -137,5 +137,28 @@ BN RandomBNLtCoPrime(const BN &max) {
     }while (n.Gcd(max) != 1);
     return n;
 }
+
+BN RandomBNInRange(const safeheron::bignum::BN &min, const safeheron::bignum::BN &max){
+    assert(max > min);
+    BN range = max - min;
+    BN r = RandomBNLt(range);
+    return min + r;
+}
+
+BN RandomNegBNInSymInterval(const safeheron::bignum::BN &limit){
+    assert(limit > 0);
+    BN r = RandomBNLt(limit);
+    uint8_t sign[1];
+    RandomBytes(sign, 1);
+    return (sign[0] & 0x01) ? r : r.Neg();
+}
+
+BN RandomNegBNInSymInterval(size_t bits){
+    BN r = RandomBN(bits);
+    uint8_t sign[1];
+    RandomBytes(sign, 1);
+    return (sign[0] & 0x01) ? r : r.Neg();
+}
+
 }
 }

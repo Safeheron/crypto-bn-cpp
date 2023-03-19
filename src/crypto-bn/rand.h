@@ -77,6 +77,28 @@ safeheron::bignum::BN RandomBNLtGcd(const safeheron::bignum::BN &max);
  */
 safeheron::bignum::BN RandomBNLtCoPrime(const safeheron::bignum::BN &max);
 
+ /**
+  * Sample random BN in range [min, max)
+  * @param min
+  * @param max
+  * @return
+  */
+safeheron::bignum::BN RandomBNInRange(const safeheron::bignum::BN &min, const safeheron::bignum::BN &max);
+
+/**
+ * Sample random BN.in range (-limit, limit)
+ * @param limit
+ * @return a random BN
+ */
+safeheron::bignum::BN RandomNegBNInSymInterval(const safeheron::bignum::BN &limit);
+
+/**
+ * Sample random BN in range (-2^bits, +2^bits)
+ * @param bits
+ * @return a random BN
+ */
+safeheron::bignum::BN RandomNegBNInSymInterval(size_t bits);
+
 };
 };
 

@@ -361,6 +361,13 @@ public:
     BN SqrtM(const BN &m) const;
 
     /**
+     * @brief Calculate square root of this object
+     * 
+     * @return BN the square root of this big number
+     */
+    BN Sqrt() const;
+
+    /**
      * Check if a square root 'r' exists where
      *      r^2 == this (mod p),
      * @param[in] m
@@ -499,31 +506,31 @@ public:
      * Return bytes size of this BN
      * @return bytes size.
      */
-    int ByteLength() const;
+    size_t ByteLength() const;
 
     /**
      * Check if this BN is a negative number.
      * @return true if this BIGUN is a negative number, false otherwise.
      */
-    int IsNeg() const;
+    bool IsNeg() const;
 
     /**
      * Check if this BN is even.
      * @return true if this BN is even, false otherwise.
      */
-    int IsEven() const;
+    bool IsEven() const;
 
     /**
      * Check if this BN is odd.
      * @return true if this BN is odd, false otherwise.
      */
-    int IsOdd() const;
+    bool IsOdd() const;
 
     /**
      * Check if this BN is equal to zero.
      * @return true if this BN is equal to zero, false otherwise.
      */
-    int IsZero() const;
+    bool IsZero() const;
 
     /**
      * Return the max one between a and b

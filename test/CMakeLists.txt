@@ -48,4 +48,7 @@ add_test(NAME rnd-test COMMAND rnd-test)
 add_executable(bn-jacobi-test bn-jacobi-test.cpp)
 add_test(NAME bn-jacobi-test COMMAND bn-jacobi-test)
 
+add_executable(bn-sqrt-test bn-sqrt-test.cpp)
+add_test(NAME bn-sqrt-test COMMAND bn-sqrt-test)
+
 

@@ -52,7 +52,7 @@ Now we must invoke the generator like this:
 Linux and Mac are supported now.  After obtaining the Source, have a look at the installation script. 
 
 ```shell
-git clone https://github.com/safeheron/crypto-bn-cpp.git
+git clone https://gitlab.com/safeheron/algogroup/crypto-bn-cpp.git
 cd crypto-bn-cpp
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
