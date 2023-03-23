@@ -3,6 +3,7 @@
 #include <openssl/bn.h>
 #include <openssl/rand.h>
 #include <memory>
+#include <cassert>
 
 using safeheron::bignum::BN;
 using safeheron::exception::LocatedException;
